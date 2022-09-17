@@ -45,7 +45,6 @@ def parse_(text, pos, m):
         elif c == ')':
             break
         else:
-            steps.append("Client or normalization error. Throw an exception: {}".format(c))
             raise Exception("Ill-formatted question")
         
         i = i + 1
@@ -58,32 +57,9 @@ def parse_(text, pos, m):
         sub_steps = generate_step(operands, ops)
         steps.append(sub_steps)
 
-    #Simplify the stack by collecting like terms
-    #Each element in the stack is an expression
-    operands.reverse()
-    ops.reverse()
-        
-    a = operands.pop()
+    simple_expr = reduce_expression(operands, ops)
 
-    while not (len(operands)==0 or len(ops)==0):
-        b = operands.pop()
-        
-        o = ops.pop()
-        
-        if o == '+':
-            a = b.add(a)
-        elif o == '-':
-            a = a.subt(b)
-        else:
-            steps.append("Something went wrong during the constrution of our stacks")
-            
-            raise Exception("Something went wrong during the construction of our stack")
-
-    if len(operands)!=0 or len(ops)!=0:
-        steps.append("Ill-formatted question")
-        raise Exception("Ill-formatted question")
-
-    return (i, a, steps)
+    return (i, simple_expr, steps)
 
 
 def generate_step(operands: list, operators: list):
@@ -100,6 +76,28 @@ def generate_step(operands: list, operators: list):
             step = step + " " + op + " " + str(b)
     
     return step
+
+def reduce_expression(operands: list, operators: list):
+    if not len(operands) - 1 == len(operators):
+        raise Exception("Ill-formatted question")
+
+    seq = zip(operands[1:], operators)
+
+    expr = functools.reduce(reduce_one_term, seq, operands[0])
+
+    return expr
+
+def reduce_one_term(partial, operand_operator_tuple):
+    operand, operator = operand_operator_tuple
+
+    if operator == '-':
+        partial = partial.subt(operand)
+    elif operator == '+':
+        partial = partial.add(operand)
+    else:
+        raise Exception("Something went wrong during the construction of our stack")
+
+    return partial
 
 def parse(text):
     _, exp, steps = parse_(text, 0, 1)
