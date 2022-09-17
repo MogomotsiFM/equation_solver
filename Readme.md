@@ -14,7 +14,8 @@
         * Split the problem into the left and right hand side expressions,
     * **Parse** the left and right hand sides expressions individualy to simplify them into linear expressions of the form: `ax + b`,
         * For this purpose we use two queue data structures to keep track of the operands and operators separately,
-        * Each element of the operands queue is an `Expression` and so it is easier to simplify
+        * Each element of the operands queue is an `Expression` and so it is easier to simplify by applying the rules defined on an `Expression`,
+        * We use recursion to distribute terms, i.e.: `2(3x + 4) = 6x + 8`.
     * **Solve** the simplified problem
         * Steps 
             * Move all the first order terms to the left hand side expression, and 
