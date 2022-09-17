@@ -26,8 +26,6 @@ def preprocess(quest):
     lhs, lhs_sub_steps = parse(lhs_exp)
     steps.extend(append_rhs(lhs_sub_steps, poly[1]))
     
-    steps.append("\n{} = {}".format(lhs, poly[1]))
-
     steps.append("\nSimplify RHS:")
     rhs, rhs_sub_steps = parse(rhs_exp)
     steps.extend(append_lhs(rhs_sub_steps, lhs))

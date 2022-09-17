@@ -53,11 +53,19 @@ def parse_(text, pos, m):
     # Generate step information
     # If we have seen the openning bracket then we have distributed terms
     #  and we must show that step
-    if seenOpenningBracket:
+    # Also, we want to print the contents of our queues if we are at the root 
+    # of the recursion stack because anywhere else we do not have access to the 
+    # expressions we have seen before nor the ones we have not seen.
+    if seenOpenningBracket and start == 0:
         sub_steps = generate_step(operands, ops)
         steps.append(sub_steps)
 
     simple_expr = reduce_expression(operands, ops)
+
+    if seenOpenningBracket and start == 0:
+        steps.append("Add like terms:")
+    if start == 0:
+        steps.append(str(simple_expr))
 
     return (i, simple_expr, steps)
 
