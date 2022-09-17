@@ -15,7 +15,7 @@ class Expression:
 
     def subt(self, other):
         if isinstance(other, Expression):
-            return Expression(self.x0 - other.x0, self.x1 - other.x1)
+            return self.add( other.mult(-1) )
         raise Exception("other should be an expression")
 
     def mult(self, a):

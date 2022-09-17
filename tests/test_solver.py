@@ -10,7 +10,7 @@ def test_simple_case():
     # x = 3
     q = '7x - 2 = 19'
 
-    lhs, rhs = solver.solve(q)
+    lhs, rhs, _ = solver.solve(q)
 
     assert lhs == Exp(0, 1)
     assert rhs == Exp(3, 0)
@@ -23,7 +23,7 @@ def test_not_so_simple_case():
     # x = 0.5
     q = '2( 4x + 3 ) + 6x = 15 - 4x'
 
-    lhs, rhs = solver.solve(q)
+    lhs, rhs, _ = solver.solve(q)
 
     assert lhs == Exp(0, 1)
     assert rhs == Exp(0.5, 0)
@@ -33,7 +33,7 @@ def test_solution_does_not_exist():
     # 0x = 2
     q = '7x - 2 = 7x'
 
-    lhs, rhs = solver.solve(q)
+    lhs, rhs, _ = solver.solve(q)
 
     assert lhs == Exp()
     assert rhs == Exp(2, 0)
