@@ -121,3 +121,11 @@ def test_parser_multiplying_brackets():
     exp, _ = parse(lst)
 
     assert str(exp) == '7x - 21'
+
+def test_parser_multiple_digits_multipliers():
+    # 30(2x - 1) - 22x
+    lst = ['30(', '2x', '-', '1', ')', '-', '22x']
+
+    exp, _ = parse(lst)
+
+    assert str(exp) == "38x - 30"

@@ -37,3 +37,15 @@ def test_solution_does_not_exist():
 
     assert lhs == Exp()
     assert rhs == Exp(2, 0)
+
+def test_not_so_simple_case_with_multiple_digit_multipliers():
+    # 21(- 4x + 3) - 6x = - 31 + 14x
+    # -84x + 63 - 6x = - 41 + 14x
+    # -104x = -104
+    # x = 1
+    q = '21( - 4x + 3 ) - 6x = - 41 + 14x'
+
+    lhs, rhs, _ = solver.solve(q)
+
+    assert lhs == Exp(0, 1)
+    assert rhs == Exp(1, 0)

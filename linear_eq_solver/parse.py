@@ -1,7 +1,7 @@
 import functools
 
 from linear_eq_solver.expression import Expression as Exp
-"""Simplifies an expression by distributing and the collecting like terms"""
+"""Simplifies an expression by distributing and then collecting like terms"""
 
 def parse_(text, pos, m):
     start = pos
@@ -21,8 +21,8 @@ def parse_(text, pos, m):
             operands.append( Exp(m*int(c), 0) )
         elif 'x' in c:
             coeff = 1
-            if len(c) == 2:
-                coeff = c[0]
+            if len(c) > 1:
+                coeff = c[:-1]
 
             operands.append( Exp(0, m*int(coeff)) )
         elif c in "-+":
@@ -35,8 +35,8 @@ def parse_(text, pos, m):
             steps.append("Distribute:")
             
             mult = 1
-            if len(c) == 2:
-                mult = int(c[0])
+            if len(c) > 1:
+                mult = int(c[:-1])
 
             (i, exp, sub_steps) = parse_(text, i+1, mult)
             steps.extend(sub_steps)
