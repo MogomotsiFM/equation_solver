@@ -49,3 +49,21 @@ def test_not_so_simple_case_with_multiple_digit_multipliers():
 
     assert lhs == Exp(0, 1)
     assert rhs == Exp(1, 0)
+
+def test_solver_simplifying_both_sides():
+    # 2(4x + 3) + 6 = 2(-2x + 10) + 16
+    q = "2( 4x + 3 ) + 6 = 2( - 2x + 10 ) + 16"
+
+    lhs, rhs, _ = solver.solve(q)
+
+    assert lhs == Exp(0, 1)
+    assert rhs == Exp(2, 0)
+
+def test_solver_missing_right_hand_side():
+    # 2(4x + 3) + 6
+    q = "2( 4x + 5 ) + 6"
+
+    lhs, rhs, _ = solver.solve(q)
+
+    assert lhs == Exp(0, 1)
+    assert rhs == Exp(-2, 0)

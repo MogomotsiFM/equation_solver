@@ -1,12 +1,47 @@
 from linear_eq_solver import preprocess
+from linear_eq_solver import parse
 from linear_eq_solver.expression import Expression
 
 def solve(q: str):
     steps = []
     steps.append(q)
 
-    (lhs, rhs, sub_steps) = preprocess(q)
-    steps.extend(sub_steps)
+    lhs, rhs = preprocess(q)
+
+    lhs, rhs, substeps = simplify_expressions(lhs, rhs)
+    steps.extend(substeps)
+
+    lhs, rhs, substeps = eliminate_first_order_terms(lhs, rhs)
+    steps.extend(substeps)
+
+    lhs, rhs, substeps = eliminate_zeroth_order_terms(lhs, rhs)
+    steps.extend(substeps)
+
+    if lhs.x1:
+        d = 1/lhs.x1
+        steps.append("\nDevide both sides by {}".format(lhs.x1))
+        lhs = lhs.mult(d)
+        rhs = rhs.mult(d)
+        
+    steps.append("\nSolution:")
+    steps.append('{} = {}'.format(lhs, rhs))
+    return lhs, rhs, steps
+
+def simplify_expressions(lhs, rhs):
+    steps = []
+
+    steps.append("\nSimplify LHS:")
+    lhs, lhs_sub_steps = parse(lhs)
+    steps.extend(append_rhs(lhs_sub_steps, " ".join(rhs)))
+    
+    steps.append("\nSimplify RHS:")
+    rhs, rhs_sub_steps = parse(rhs)
+    steps.extend(append_lhs(rhs_sub_steps, lhs))
+
+    return lhs, rhs, steps
+
+def eliminate_first_order_terms(lhs, rhs):
+    steps = []
 
     a = Expression(0, rhs.x1)
     if a.x1:
@@ -24,6 +59,10 @@ def solve(q: str):
         rhs = rhs.subt( a )
         steps.append('{} = {}'.format(lhs, rhs))
 
+    return lhs, rhs, steps
+
+def eliminate_zeroth_order_terms(lhs, rhs):
+    steps = []
 
     b = Expression(lhs.x0, 0)
     if b.x0:
@@ -41,12 +80,30 @@ def solve(q: str):
         lhs = lhs.subt( b )
         steps.append('{} = {}'.format(lhs, rhs))
 
-    if lhs.x1:
-        d = 1/lhs.x1
-        steps.append("\nDevide both sides by {}".format(lhs.x1))
-        lhs = lhs.mult(d)
-        rhs = rhs.mult(d)
-        
-    steps.append("\nSolution:")
-    steps.append('{} = {}'.format(lhs, rhs))
     return lhs, rhs, steps
+
+def append_lhs(rhs_substeps: list, lhs_expr):
+    # Note that we do not generate equations if a step ends with a colon
+    # This is because those steps highlight the maths concept used
+    # This is why we need this hidden functions
+    def append_lhs_to_single_step(substep: str, lhs_expr):
+        if substep[-1] == ':':
+            return substep
+        return str(lhs_expr) + ' = ' + substep
+
+    steps = map(lambda s: append_lhs_to_single_step(s, lhs_expr), rhs_substeps)
+        
+    return list(steps)
+
+def append_rhs(lhs_substeps: list, rhs_expr):
+    # Note that we do not generate equations if a step ends with a colon
+    # This is because those steps highlight the maths concept used
+    # This is why we need this hidden functions
+    def append_rhs_to_single_step(substep: str, rhs_expr):
+        if substep[-1] == ':':
+            return substep
+        return substep + ' = ' + rhs_expr
+
+    steps = map(lambda s: append_rhs_to_single_step(s, rhs_expr), lhs_substeps)
+    
+    return list(steps)

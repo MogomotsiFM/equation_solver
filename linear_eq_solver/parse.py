@@ -107,7 +107,7 @@ def reduce_one_term(partial, operand_operator_tuple):
 
     return partial
 
-def parse(text):
+def parse(text: list):
     _, exp, steps = parse_(text, 0, 1)
 
     return exp, steps
