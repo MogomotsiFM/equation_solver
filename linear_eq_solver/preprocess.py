@@ -54,7 +54,7 @@ def append_rhs(lhs_substeps: list, rhs_expr):
     def append_rhs_to_single_step(substep: str, rhs_expr):
         if substep[-1] == ':':
             return substep
-        return rhs_expr + ' = ' + substep
+        return substep + ' = ' + rhs_expr
 
     steps = map(lambda s: append_rhs_to_single_step(s, rhs_expr), lhs_substeps)
     
