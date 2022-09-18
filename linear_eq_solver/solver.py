@@ -19,7 +19,7 @@ def solve(q: str):
     first_order_coeff = lhs.get_monomial(1).coeff
     if first_order_coeff:
         d = 1/first_order_coeff
-        steps.append("\nDevide both sides by {}".format(first_order_coeff))
+        steps.append("\nDevide both sides by {}:".format(first_order_coeff))
         lhs = lhs.mult(d)
         rhs = rhs.mult(d)
         

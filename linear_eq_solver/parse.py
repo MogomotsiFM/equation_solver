@@ -34,7 +34,7 @@ def parse_(text, pos, m):
         elif '(' in c:
             seenOpenningBracket = True
             
-            steps.append("Distribute:")
+            steps.append("\nDistribute:")
             
             mult = 1
             if len(c) > 1:
@@ -65,7 +65,7 @@ def parse_(text, pos, m):
     simple_expr = reduce_expression(operands, ops)
 
     if seenOpenningBracket and start == 0:
-        steps.append("Add like terms:")
+        steps.append("\nAdd like terms:")
     if start == 0:
         steps.append(str(simple_expr))
 

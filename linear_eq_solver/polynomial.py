@@ -1,7 +1,7 @@
 import copy
 from functools import reduce
 
-from linear_eq_solver.monomial import Monomial
+from linear_eq_solver import Monomial
 
 class Polynomial(Monomial):
     '''

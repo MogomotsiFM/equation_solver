@@ -2,7 +2,7 @@ import pytest
 
 from linear_eq_solver import Polynomial
 from linear_eq_solver import Monomial
-from linear_eq_solver.polynomial import buildPolynomial
+from linear_eq_solver import buildPolynomial
 
 def test_polynomial_set_correctly():
     # "3x^2"

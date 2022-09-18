@@ -1,0 +1,34 @@
+21( 4x + 3 ) + 6x - 9 = - 12( - 12x + 10 ) + 12
+
+Simplify LHS:
+
+Distribute:
+84x + 63 + 6x - 9 = - 12( - 12x + 10 ) + 12
+
+Add like terms:
+90x + 54 = - 12( - 12x + 10 ) + 12
+
+Simplify RHS:
+
+Distribute:
+90x + 54 =  144x - 120 + 12
+
+Add like terms:
+90x + 54 = 144x - 108
+
+Subtract 144x on both sides of the equal sign:
+90x + 54 - 144x = - 144x + 144x - 108
+
+Simplify both sides:
+- 54x + 54 = - 108
+
+Subtract 54 on both sides of the equal sign:
+- 54x + 54 - 54 = - 108 - 54
+
+Simplify both sides:
+- 54x = - 162
+
+Devide both sides by -54:
+
+Solution:
+1.0x = 3.0
