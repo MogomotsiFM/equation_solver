@@ -1,12 +1,12 @@
 ### How it works?
-* The fundamental data structure is an `Expression`. An `Expression` is a first order polynomial represented as two numbers and a set of permited operations.
+* The fundamental data structures are the `Monomial` and `Polynomial` classes.  a `Monomial = ax^n` as a coefficient `a` and an exponent `n`, along with the allowed operations. The composite design pattern is then used to represent a `Polynomial` in terms of the `Monomial` class. This should make it easier to extend to higher order polynomials. 
     * Permited operations:
-        * Adding one expression to another,
-        * Subracting one expression from another,
-        * Multiplying an expression by a scalar,
-        * Test for equality,
-        * Printing an expression.
-    * A better alternative could probably have been to represent a `Monomial = ax^n` as a coefficient `a` and an exponent `n`, along with the allowed operations. We could then use the composite design pattern to represent an `Expression` in terms of the `Monomial` class. This would make it easier to extend to higher order polynomials.
+        * Adding one `Monomial` or `Polynomial` to another. It is even possible to add `Monomial` to 
+        a `Polynomial`,
+        * Subracting one `Monomial` or `Polynomial` from another. It is even possible to subtract `Monomial` from a `Polynomial`,
+        * Multiplying an `Monomial` or `Polynomial` by a scalar,
+        * Tests for equality,
+        * Printing an expressions.
 * Steps involved in solving linear problems:
     * **Preprocess** the problem to convert it into a standard format:
         * Spaces around all operators and brackets,
@@ -14,7 +14,7 @@
         * Split the problem into the left and right hand side expressions,
     * **Parse** the left and right hand sides expressions individualy to simplify them into linear expressions of the form: `ax + b`,
         * For this purpose we use two queue data structures to keep track of the operands and operators separately,
-        * Each element of the operands queue is an `Expression` and so it is easier to simplify by applying the rules defined on an `Expression`,
+        * Each element of the operands queue is an `Monomial` and so it is easier to simplify by applying the methods defined on both the `Monomial` and `Polynomial`,
         * We use recursion to distribute terms, i.e.: `2(3x + 4) = 6x + 8`.
     * **Solve** the simplified problem
         * Steps 
