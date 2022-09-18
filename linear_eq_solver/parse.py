@@ -1,6 +1,9 @@
 import functools
 
 from linear_eq_solver.expression import Expression as Exp
+from linear_eq_solver.monomial import Monomial
+from linear_eq_solver.polynomial import Polynomial
+
 """Simplifies an expression by distributing and then collecting like terms"""
 
 def parse_(text, pos, m):
@@ -18,16 +21,19 @@ def parse_(text, pos, m):
         c = text[i]
 
         if c.isdigit():
-            operands.append( Exp(m*int(c), 0) )
+            #operands.append( Exp(m*int(c), 0) )
+            operands.append(Polynomial(Monomial(m*int(c), 0)))
         elif 'x' in c:
             coeff = 1
             if len(c) > 1:
                 coeff = c[:-1]
 
-            operands.append( Exp(0, m*int(coeff)) )
+            #operands.append( Exp(0, m*int(coeff)) )
+            operands.append(Polynomial(Monomial(m*int(coeff), 1)))
         elif c in "-+":
             if c == '-' and i == start: #The leading term is negative
-                operands.append(Exp())
+                #operands.append(Exp())
+                operands.append(Polynomial(Monomial(0, 0)))
             ops.append(c)
         elif '(' in c:
             seenOpenningBracket = True
@@ -74,7 +80,8 @@ def generate_step(operands: list, operators: list):
     step = ""
     # We insert a 0 Expression at the begining if an expression has a leading neg number
     # So, for printing purposes, ignore it if it was inserted
-    if not operands[0] == Exp(0, 0):
+    #if not operands[0] == Exp(0, 0):
+    if not operands[0] == Polynomial(Monomial(0, 0)):
         step = str(operands[0])
 
     for b, op in zip(operands[1:], operators):

@@ -19,16 +19,19 @@ class Monomial:
         raise Exception("Monomials may be multiplied by scalars only.")
 
     def __str__(self):
-        str_ = ""
-        if self.coeff > 0:
-            str_ = str_ + "{}".format(self.coeff)
-        else:
-            str_ = str_ + "- {}".format(self.coeff)
+        str_ = "0"
+        if self.coeff:
+            if self.coeff > 0:
+                str_ = "{}".format(self.coeff)
+            else:
+                str_ = "- {}".format(-1*self.coeff)
+        
+            if self.exponent == 1:
+                str_ = str_ + "x"
+            elif self.exponent > 1:
+                str_ = str_ + "x^{}".format(self.exponent)
 
-        if self.exponent == 1:
-            str_ = str_ + "x"
-        elif self.exponent > 1:
-            str_ = str_ + "x^{}".format(self.exponent)
+        return str_
 
     def __eq__(self, other):
         return (self is other or

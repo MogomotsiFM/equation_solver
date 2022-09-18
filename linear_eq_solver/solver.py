@@ -17,9 +17,10 @@ def solve(q: str):
     lhs, rhs, substeps = eliminate_zeroth_order_terms(lhs, rhs)
     steps.extend(substeps)
 
-    if lhs.x1:
-        d = 1/lhs.x1
-        steps.append("\nDevide both sides by {}".format(lhs.x1))
+    first_order_coeff = lhs.getMonomial(1).coeff
+    if first_order_coeff:
+        d = 1/first_order_coeff
+        steps.append("\nDevide both sides by {}".format(first_order_coeff))
         lhs = lhs.mult(d)
         rhs = rhs.mult(d)
         
@@ -43,9 +44,12 @@ def simplify_expressions(lhs, rhs):
 def eliminate_first_order_terms(lhs, rhs):
     steps = []
 
-    a = Expression(0, rhs.x1)
-    if a.x1:
-        if a.x1 > 0:
+    #a = Expression(0, rhs.x1)
+    a = rhs.getMonomial(1)
+    #if a.x1:
+    if a.coeff:
+        #if a.x1 > 0:
+        if a.coeff > 0:
             steps.append("\nSubtract {} on both sides of the equal sign:".format(a))
             steps.append('{} - {} = - {} + {}'.format(lhs, a, a, rhs))
         else:
@@ -64,9 +68,12 @@ def eliminate_first_order_terms(lhs, rhs):
 def eliminate_zeroth_order_terms(lhs, rhs):
     steps = []
 
-    b = Expression(lhs.x0, 0)
-    if b.x0:
-        if b.x0 > 0:
+    #b = Expression(lhs.x0, 0)
+    b = lhs.getMonomial(0)
+    #if b.x0:
+    if b.coeff:
+        #if b.x0 > 0:
+        if b.coeff > 0:
             steps.append("\nSubtract {} on both sides of the equal sign:".format(b))
             steps.append('{} - {} = {} - {}'.format(lhs, b, rhs, b))
         else:
@@ -83,6 +90,11 @@ def eliminate_zeroth_order_terms(lhs, rhs):
     return lhs, rhs, steps
 
 def append_lhs(rhs_substeps: list, lhs_expr):
+    '''
+    When solving equations, we focus on one side first, applying mathematical concepts 
+    to that side. The other side is carried along unmodified. This fuction allows us
+    to carry along the LHS.
+    '''
     # Note that we do not generate equations if a step ends with a colon
     # This is because those steps highlight the maths concept used
     # This is why we need this hidden functions
@@ -96,6 +108,11 @@ def append_lhs(rhs_substeps: list, lhs_expr):
     return list(steps)
 
 def append_rhs(lhs_substeps: list, rhs_expr):
+    '''
+    When solving equations, we focus on one side first, applying mathematical concepts 
+    to that side. The other side is carried along unmodified. This fuction allows us
+    to carry along the rhs.
+    '''
     # Note that we do not generate equations if a step ends with a colon
     # This is because those steps highlight the maths concept used
     # This is why we need this hidden functions
