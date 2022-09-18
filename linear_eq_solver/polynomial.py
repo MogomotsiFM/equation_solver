@@ -99,7 +99,7 @@ class Polynomial(Monomial):
         return self.expression.get(exponent, Monomial(0, exponent))
 
 
-def buildPolynomial(*args):
+def build_polynomial(*args):
     poly = None
     for mono in args:
         if isinstance(mono, Monomial) or isinstance(mono, Polynomial):

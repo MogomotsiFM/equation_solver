@@ -2,7 +2,7 @@ import pytest
 
 from linear_eq_solver import Polynomial
 from linear_eq_solver import Monomial
-from linear_eq_solver import buildPolynomial
+from linear_eq_solver import build_polynomial
 
 def test_polynomial_set_correctly():
     # "3x^2"
@@ -13,10 +13,10 @@ def test_polynomial_set_correctly():
 
 def test_polynomial_addition_success():
     # "3x^2 + 5x^8"
-    m = buildPolynomial(Monomial(3, 2), Monomial(5, 8))
+    m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
     # "-2x + 7x^4"
-    n = buildPolynomial(Monomial(-2, 1), Monomial(7, 4))
+    n = build_polynomial(Monomial(-2, 1), Monomial(7, 4))
 
     s = m.add(n)
 
@@ -24,7 +24,7 @@ def test_polynomial_addition_success():
 
 def test_polynomial_adding_monomial_succeeds():
     # "3x^2 + 5x^8"
-    m = buildPolynomial(Monomial(3, 2), Monomial(5, 8))
+    m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
     # "-2x^10"
     n = Monomial(-2, 10)
@@ -36,7 +36,7 @@ def test_polynomial_adding_monomial_succeeds():
 def test_polynomial_addition_failure():
     with pytest.raises(Exception) as exc:
         # "3x^2 + 5x^8"
-        m = buildPolynomial(Monomial(3, 2), Monomial(5, 8))
+        m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
         s = m.add(5)
 
@@ -44,10 +44,10 @@ def test_polynomial_addition_failure():
 
 def test_polynomial_subtration_success():
     # "3x^2 + 5x^8"
-    m = buildPolynomial(Monomial(3, 2), Monomial(5, 8))
+    m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
     # "-2x + 7x^4"
-    n = buildPolynomial(Monomial(-2, 1), Monomial(7, 4))
+    n = build_polynomial(Monomial(-2, 1), Monomial(7, 4))
 
     s = m.subt(n)
 
@@ -55,7 +55,7 @@ def test_polynomial_subtration_success():
 
 def test_polynomial_adding_monomial_succeeds():
     # "3x^2 + 5x^8"
-    m = buildPolynomial(Monomial(3, 2), Monomial(5, 8))
+    m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
     # "7x^4"
     n = Monomial(7, 4)
@@ -67,7 +67,7 @@ def test_polynomial_adding_monomial_succeeds():
 def test_polynomial_subt_failure():
     with pytest.raises(Exception) as exc:
         # "3x^2 + 5x^8"
-        m = buildPolynomial(Monomial(3, 2), Monomial(5, 8))
+        m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
         s = m.subt(5)
 
@@ -75,7 +75,7 @@ def test_polynomial_subt_failure():
 
 def test_polynomial_scalar_multiplication_success():
     # "3x^2 + 5x^8"
-    m = buildPolynomial(Monomial(3, 2), Monomial(5, 8))
+    m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
     s = m.mult(-3)
 
@@ -84,7 +84,7 @@ def test_polynomial_scalar_multiplication_success():
 def test_polynomial_nonscalar_multiplecation_failure():
     with pytest.raises(Exception) as exc:
         # "3x^2 + 5x^8"
-        m = buildPolynomial(Monomial(3, 2), Monomial(5, 8))
+        m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
         # -x^3
         n = Monomial(-1, 3)
