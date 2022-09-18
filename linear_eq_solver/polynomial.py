@@ -1,4 +1,4 @@
-from copy import deepcopy
+import copy
 from functools import reduce
 
 from linear_eq_solver.monomial import Monomial
@@ -6,79 +6,89 @@ from linear_eq_solver.monomial import Monomial
 class Polynomial(Monomial):
     '''
     Uses a dictionary to represent a polynomial
-    The key is the exponent and the value is the coeffient
-    '''
-    def __init__(self):
-        """
-        Represent a polynomial as a dictionary where 
-            * The key is the exponent,
-            * The value is a Monomial.
-        This representation means that we are duplicating exponent data but it
-        allows us to say a Polynomial has a number of Monomials
-        """
-        #self.expression = {0, Monomial(0, 0)}
-        self.expression = {0, 0}
+    The key is the exponent and the a Monomial
 
+    This representation means that we are duplicating exponent data but it
+    allows us to say a Polynomial has a number of Monomials
+    '''
     def __init__(self, other):
         self.expression = {}
         if isinstance(other, Polynomial):
-            self.expression = other.expression.copy()
-            #deepcopy(other, self)
+            self.expression = copy.deepcopy(other.expression)
         elif isinstance(other, Monomial):
-            self.expression[other.exponent] = other.coeff
+            self.expression[other.exponent] = copy.copy(other)
         else:
-            raise Exception("A polynomial may only be constructed from another polynomial.")
+            raise Exception("A polynomial may only be constructed from a monomial or another polynomial .")
 
     def add(self, other):
         if isinstance(other, Polynomial):
             tmp = Polynomial(self)
-            for exp, coeff in other.expression.items():
-                tmp.expression[exp] = tmp.expression.get(exp, 0) + coeff
+            for exponent, term in other.expression.items():
+                tmp.expression[exponent] = tmp.getMonomial(exponent).add(term)
             return tmp
-        elif isinstance(other, Monomial) and False:
+        elif isinstance(other, Monomial):
             tmp = Polynomial(self)
-            tmp.expression[other.exponent] = tmp.expression.get(other.exponent, 0) + other.coeff
+            tmp.expression[other.exponent] = tmp.getMonomial(other.exponent).add(other)
             return tmp
         raise Exception("A poly may be added to another poly or monomial.") 
             
     def subt(self, other):
         if isinstance(other, Polynomial):
             tmp = Polynomial(self)
-            for exp, coeff in other.expression.items():
-                tmp.expression[exp] = tmp.expression.get(exp, 0) - coeff
+            for exponent, term in other.expression.items():
+                tmp.expression[exponent] = tmp.getMonomial(exponent).subt(term)
             return tmp
         elif isinstance(other, Monomial):
             tmp = Polynomial(self)
-            tmp.expression[other.exponent] = tmp.expression.get(other.exponent, 0) - other.coeff
+            tmp.expression[other.exponent] = tmp.getMonomial(other.exponent).subt(other)
             return tmp
         raise Exception("A poly may be subtracted from another poly or monomial.")
 
     def mult(self, a):
         if type(a) is int or type(a) is float:
             tmp = Polynomial(self)
-            for exp, coeff in tmp.expression.items():
-                tmp.expression[exp] = a*coeff
+            for exponent, term in self.expression.items():
+                tmp.expression[exponent] = term.mult(a)
             return tmp
-        raise Exception("A polynomial may be multiplied with a number only.")
+        raise Exception("A poly may be multiplied with a number only.")
 
     def __eq__(self, other):
         if isinstance(other, Polynomial):
             return ( len(other.expression) == len(other.expression) and 
-                reduce(lambda p, t: p and t[1] == other.expression[t[0]], other.expression.items(), True)
+                reduce(lambda p, mono: p and mono == other.getMonomial(mono.exponent), other.expression.values(), True)
             )
         return False
 
     def __str__(self):
         str_ = ""
+
         seen_non_zero_term = False
-        for exp, coeff in self.expression.items():
-            tmp = Monomial(coeff, exp)
-            if coeff > 0:
+        is_first_term = True
+
+        # We need to ensure the terms of a Polynomial are printed a certain way 
+        # if our tests are to pass. 
+        # Also, it is nicer if the higher order terms are printed first
+        exponents = list(self.expression.keys())
+        exponents.sort(reverse=True)
+        
+        for e in exponents:
+            term = self.getMonomial(e)
+            if term.coeff > 0:
                 seen_non_zero_term = True
-                str_ = str_ + " + " + str(tmp)
-            elif coeff < 0:
+                if is_first_term:
+                    str_ = str_ + str(term)
+                else:
+                    str_ = str_ + " + " + str(term)
+
+                is_first_term = False
+            elif term.coeff < 0:
                 seen_non_zero_term = True
-                str_ = str_ + str(tmp)
+                if is_first_term:
+                    str_ = str_ + str(term)
+                else:
+                    str_ = str_ + " " + str(term)
+
+                is_first_term = False
 
         if not seen_non_zero_term:
             str_ = "0"
@@ -86,6 +96,6 @@ class Polynomial(Monomial):
         return str_
 
     def getMonomial(self, exponent):
-        return Monomial(self.expression.get(exponent, 0), exponent)
+        return self.expression.get(exponent, Monomial(0, exponent))
 
 

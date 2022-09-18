@@ -1,4 +1,3 @@
-#from context import linear_eq_solver
 from linear_eq_solver import preprocess
 
 def test_preprocess_simple():

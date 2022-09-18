@@ -1,6 +1,5 @@
 import pytest
 
-#from context import linear_eq_solver
 from linear_eq_solver import parse
 
 def test_parser_no_simplification_required():

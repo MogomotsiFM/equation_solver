@@ -1,4 +1,3 @@
-from linear_eq_solver.expression import Expression
 from linear_eq_solver.monomial import Monomial
 from linear_eq_solver.polynomial import Polynomial
 from linear_eq_solver.parse import parse

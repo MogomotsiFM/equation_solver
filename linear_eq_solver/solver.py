@@ -1,6 +1,5 @@
 from linear_eq_solver import preprocess
 from linear_eq_solver import parse
-from linear_eq_solver.expression import Expression
 
 def solve(q: str):
     steps = []
