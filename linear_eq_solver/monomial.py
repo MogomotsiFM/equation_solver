@@ -34,8 +34,8 @@ class Monomial:
         return str_
 
     def __eq__(self, other):
-        return (self is other or
-                    ( isinstance(other, Monomial) and 
-                        self.coeff == other.coeff and self.exponent == other.exponent
-                    )
+        if isinstance(other, Monomial):
+            return ( self is other or
+                    (self.coeff == other.coeff and self.exponent == other.exponent)
                 )
+        return False

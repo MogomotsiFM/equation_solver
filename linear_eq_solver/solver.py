@@ -16,7 +16,7 @@ def solve(q: str):
     lhs, rhs, substeps = eliminate_zeroth_order_terms(lhs, rhs)
     steps.extend(substeps)
 
-    first_order_coeff = lhs.getMonomial(1).coeff
+    first_order_coeff = lhs.get_monomial(1).coeff
     if first_order_coeff:
         d = 1/first_order_coeff
         steps.append("\nDevide both sides by {}".format(first_order_coeff))
@@ -43,11 +43,8 @@ def simplify_expressions(lhs, rhs):
 def eliminate_first_order_terms(lhs, rhs):
     steps = []
 
-    #a = Expression(0, rhs.x1)
-    a = rhs.getMonomial(1)
-    #if a.x1:
+    a = rhs.get_monomial(1)
     if a.coeff:
-        #if a.x1 > 0:
         if a.coeff > 0:
             steps.append("\nSubtract {} on both sides of the equal sign:".format(a))
             steps.append('{} - {} = - {} + {}'.format(lhs, a, a, rhs))
@@ -67,11 +64,8 @@ def eliminate_first_order_terms(lhs, rhs):
 def eliminate_zeroth_order_terms(lhs, rhs):
     steps = []
 
-    #b = Expression(lhs.x0, 0)
-    b = lhs.getMonomial(0)
-    #if b.x0:
+    b = lhs.get_monomial(0)
     if b.coeff:
-        #if b.x0 > 0:
         if b.coeff > 0:
             steps.append("\nSubtract {} on both sides of the equal sign:".format(b))
             steps.append('{} - {} = {} - {}'.format(lhs, b, rhs, b))

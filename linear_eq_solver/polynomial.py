@@ -24,11 +24,11 @@ class Polynomial(Monomial):
         if isinstance(other, Polynomial):
             tmp = Polynomial(self)
             for exponent, term in other.expression.items():
-                tmp.expression[exponent] = tmp.getMonomial(exponent).add(term)
+                tmp.expression[exponent] = tmp.get_monomial(exponent).add(term)
             return tmp
         elif isinstance(other, Monomial):
             tmp = Polynomial(self)
-            tmp.expression[other.exponent] = tmp.getMonomial(other.exponent).add(other)
+            tmp.expression[other.exponent] = tmp.get_monomial(other.exponent).add(other)
             return tmp
         raise Exception("A poly may be added to another poly or monomial.") 
             
@@ -36,11 +36,11 @@ class Polynomial(Monomial):
         if isinstance(other, Polynomial):
             tmp = Polynomial(self)
             for exponent, term in other.expression.items():
-                tmp.expression[exponent] = tmp.getMonomial(exponent).subt(term)
+                tmp.expression[exponent] = tmp.get_monomial(exponent).subt(term)
             return tmp
         elif isinstance(other, Monomial):
             tmp = Polynomial(self)
-            tmp.expression[other.exponent] = tmp.getMonomial(other.exponent).subt(other)
+            tmp.expression[other.exponent] = tmp.get_monomial(other.exponent).subt(other)
             return tmp
         raise Exception("A poly may be subtracted from another poly or monomial.")
 
@@ -55,7 +55,7 @@ class Polynomial(Monomial):
     def __eq__(self, other):
         if isinstance(other, Polynomial):
             return ( len(other.expression) == len(other.expression) and 
-                reduce(lambda p, mono: p and mono == other.getMonomial(mono.exponent), other.expression.values(), True)
+                reduce(lambda p, mono: p and mono == other.get_monomial(mono.exponent), other.expression.values(), True)
             )
         return False
 
@@ -72,7 +72,7 @@ class Polynomial(Monomial):
         exponents.sort(reverse=True)
         
         for e in exponents:
-            term = self.getMonomial(e)
+            term = self.get_monomial(e)
             if term.coeff > 0:
                 seen_non_zero_term = True
                 if is_first_term:
@@ -95,7 +95,19 @@ class Polynomial(Monomial):
 
         return str_
 
-    def getMonomial(self, exponent):
+    def get_monomial(self, exponent):
         return self.expression.get(exponent, Monomial(0, exponent))
 
 
+def buildPolynomial(*args):
+    poly = None
+    for mono in args:
+        if isinstance(mono, Monomial) or isinstance(mono, Polynomial):
+            if poly == None:
+                poly = Polynomial(mono)
+            else:
+                poly = poly.add(mono)
+        else:
+            raise Exception("Can only build a Polynomial from Monomials or another Polynomial")
+
+    return poly
