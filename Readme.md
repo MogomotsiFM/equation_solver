@@ -1,5 +1,5 @@
 ### How it works?
-* The fundamental data structures are the `Monomial` and `Polynomial` classes.  A `Monomial = ax^n` has a coefficient `a` and an exponent `n`, along with the allowed operations. The composite design pattern is then used to represent a `Polynomial` in terms of the `Monomial` class. This should make it easier to extend to higher order polynomials. 
+* The fundamental data structures are the `Monomial` and `Polynomial` classes.  A `Monomial = ax^n` has a coefficient `a` and an exponent `n`, along with the allowed operations. The composite design pattern is then used to represent a `Polynomial` in terms of the `Monomial` class. This should make it easier to extend to higher order polynomials. ~~`Polynomial` inheriting from `Monomial` does not seem imminently useful in Python since a list can contain anything. We can do without it.~~ 
     * Permited operations:
         * Adding one `Monomial` or `Polynomial` to another. It is even possible to add a `Monomial` to 
         a `Polynomial`,
