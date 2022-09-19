@@ -1,5 +1,6 @@
 import copy
 from functools import reduce
+from itertools import product
 
 from linear_eq_solver import Monomial
 
@@ -42,15 +43,19 @@ class Polynomial(Monomial):
             tmp = Polynomial(self)
             tmp.expression[other.exponent] = tmp.get_monomial(other.exponent).subt(other)
             return tmp
-        raise Exception("A poly may be subtracted from another poly or monomial.")
+        raise Exception("A poly may be subtracted from another poly or Monomial.")
 
-    def mult(self, a):
-        if type(a) is int or type(a) is float:
+    def mult(self, other):
+        if isinstance(other, Polynomial):
+            monos = [ ts[0].mult(ts[1]) for ts in product(self.expression.values(), other.expression.values()) ]
+            poly = build_polynomial( *monos )
+            return poly
+        elif type(other) is int or type(other) is float or isinstance(other, Monomial):
             tmp = Polynomial(self)
             for exponent, term in self.expression.items():
-                tmp.expression[exponent] = term.mult(a)
+                tmp.expression[exponent] = term.mult(other)
             return tmp
-        raise Exception("A poly may be multiplied with a number only.")
+        raise Exception("A poly may be multiplied with a number or Monomial.")
 
     def __eq__(self, other):
         if isinstance(other, Polynomial):
@@ -100,14 +105,7 @@ class Polynomial(Monomial):
 
 
 def build_polynomial(*args):
-    poly = None
-    for mono in args:
-        if isinstance(mono, Monomial) or isinstance(mono, Polynomial):
-            if poly == None:
-                poly = Polynomial(mono)
-            else:
-                poly = poly.add(mono)
-        else:
-            raise Exception("Can only build a Polynomial from Monomials or another Polynomial")
+    initial = Polynomial(Monomial(0, 0))
+    poly = reduce( lambda part, term: part.add(term), args, initial )
 
     return poly

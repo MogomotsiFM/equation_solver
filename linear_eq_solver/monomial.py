@@ -1,7 +1,10 @@
 class Monomial:
     def __init__(self, coeff, exponent):
-        self.coeff = coeff
-        self.exponent = exponent
+        if type(coeff) in (int, float) and type(exponent) is int:
+            self.coeff = coeff
+            self.exponent = exponent
+        else:
+            raise Exception("Both coeff and exp should be integers.")
 
     def add(self, other):
         if isinstance(other, Monomial) and self.exponent == other.exponent:
@@ -13,10 +16,13 @@ class Monomial:
             return Monomial(self.coeff - other.coeff, self.exponent)
         raise Exception("Only monomials of the same order may be minused.")
 
-    def mult(self, a):
-        if type(a) is int or type(a) is float:
-            return Monomial(a*self.coeff, self.exponent)
-        raise Exception("Monomials may be multiplied by scalars only.")
+    def mult(self, other):
+        if type(other) is int or type(other) is float:
+            return Monomial(other*self.coeff, self.exponent)
+        elif isinstance(other, Monomial):
+            return Monomial(other.coeff*self.coeff, self.exponent+other.exponent)
+
+        raise Exception("Monomials may be multiplied by a scalar or another Monomial.")
 
     def __str__(self):
         str_ = "0"

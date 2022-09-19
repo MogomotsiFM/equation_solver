@@ -88,11 +88,19 @@ def test_solver_not_so_simple_steps():
         assert a == b
     assert actual == solution
 
+# TODO: Use pytest machenisms to load test data.
 def get_target_solution(fname):
     solution = None
-    with open(fname, 'r') as f:
-        solution = f.readlines()
-    
+    # Test data files may not be found depending on wheter pytest 
+    # is ran from inside/outside the tests folder.
+    try:
+        with open(fname, 'r') as f:
+            solution = f.readlines()
+    except:
+        fname = "tests/"+fname
+        with open(fname, 'r') as f:
+            solution = f.readlines()
+
     filtered = [line.strip() for line in solution if len(line)>1]
     target = list( map(preprocess, filtered) )
 

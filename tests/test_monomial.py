@@ -66,15 +66,14 @@ def test_monomial_valid_multiplication():
 
     assert str(s) == '- 6x^2'
 
-def test_monomial_invalid_multiplication():
+def test_monomial_with_monomial_multiplication():
     "3x * 5x^2"
-    with pytest.raises(Exception) as exc:
-        m = Monomial(3, 1)
-        n = Monomial(5, 2)
+    m = Monomial(3, 1)
+    n = Monomial(5, 2)
 
-        s = m.mult(n)
+    s = m.mult(n)
 
-    assert str(exc.value) == "Monomials may be multiplied by scalars only."
+    assert str(s) == '15x^3'
 
 def test_monomial_equal_to_itself():
     m = Monomial(3, 2)

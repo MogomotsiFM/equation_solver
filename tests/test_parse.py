@@ -115,7 +115,7 @@ def test_parser_simple_math():
 
 def test_parser_multiplying_brackets():
     # (1 + 6)(x - 3)
-    lst = ['(', '1', '+', '6', ')', '(', 'x', '-', '3', ')']
+    lst = ['(', '1', '+', '6', ')(', 'x', '-', '3', ')']
 
     exp, _ = parse(lst)
 

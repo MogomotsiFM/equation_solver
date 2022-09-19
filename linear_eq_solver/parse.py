@@ -20,17 +20,35 @@ def parse_(text, pos, m):
         c = text[i]
 
         if c.isdigit():
-            operands.append(Monomial(m*int(c), 0))
+            mono = Monomial(int(c), 0)
+            operands.append( Polynomial(mono).mult(m) )
         elif 'x' in c:
             coeff = 1
             if len(c) > 1:
                 coeff = c[:-1]
 
-            operands.append(Monomial(m*int(coeff), 1))
+            mono = Monomial(int(coeff), 1)
+            operands.append( Polynomial(mono).mult(m) )
         elif c in "-+":
             if c == '-' and i == start: #The leading term is negative
                 operands.append(Monomial(0, 0))
             ops.append(c)
+        elif ')' in c:
+            if len(c) == 1:
+                break
+            else:
+                if c == ')(':
+                    # Hacky: Make sure this term is inspected again since 
+                    # it contains two terms that do not exactly go together
+                    # We have to modify this term because everytime we see a closing 
+                    # break and return to the calling function. This means that without 
+                    # modifying this term we endup terminating prematurely.
+                    text[i] = '#('
+                    i = i - 1
+
+                    break
+                #else:
+                #    raise Exception
         elif '(' in c:
             seenOpenningBracket = True
             
@@ -38,14 +56,16 @@ def parse_(text, pos, m):
             
             mult = 1
             if len(c) > 1:
-                mult = int(c[:-1])
+                if c == '#(':
+                    # The popped value is actually a Polynomial.
+                    mult = operands.pop()
+                else:
+                    mult = int(c[:-1])
 
             (i, exp, sub_steps) = parse_(text, i+1, mult)
             steps.extend(sub_steps)
             
             operands.append(exp)
-        elif c == ')':
-            break
         else:
             raise Exception("Ill-formatted question")
         

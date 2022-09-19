@@ -71,7 +71,7 @@ def test_polynomial_subt_failure():
 
         s = m.subt(5)
 
-    assert str(exc.value) == "A poly may be subtracted from another poly or monomial."
+    assert str(exc.value) == "A poly may be subtracted from another poly or Monomial."
 
 def test_polynomial_scalar_multiplication_success():
     # "3x^2 + 5x^8"
@@ -82,13 +82,23 @@ def test_polynomial_scalar_multiplication_success():
     assert str(s) == "- 15x^8 - 9x^2"
 
 def test_polynomial_nonscalar_multiplecation_failure():
-    with pytest.raises(Exception) as exc:
-        # "3x^2 + 5x^8"
-        m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
+    # "- 3x^2 + 5x^8"
+    m = build_polynomial(Monomial(-3, 2), Monomial(5, 8))
 
-        # -x^3
-        n = Monomial(-1, 3)
+    # -2x^3
+    n = Monomial(-2, 3)
 
-        s = m.mult(n)
+    s = m.mult(n)
 
-    assert str(exc.value) == "A poly may be multiplied with a number only."
+    assert str(s) == '- 10x^11 + 6x^5'
+
+def test_polynomial_with_polynomial_multiplication_success():
+    # "3x^2 + 5x^8"
+    m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
+
+    # "-2x + 7x^4"
+    n = build_polynomial(Monomial(-2, 1), Monomial(7, 4))
+
+    s = m.mult(n)
+
+    assert str(s) == '35x^12 - 10x^9 + 21x^6 - 6x^3'
