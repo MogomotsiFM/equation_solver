@@ -103,6 +103,9 @@ class Polynomial(Monomial):
     def get_monomial(self, exponent):
         return self.expression.get(exponent, Monomial(0, exponent))
 
+    def order(self):
+        return max(self.expression.keys())
+
 
 def build_polynomial(*args):
     initial = Polynomial(Monomial(0, 0))

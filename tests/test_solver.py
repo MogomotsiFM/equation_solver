@@ -88,6 +88,14 @@ def test_solver_not_so_simple_steps():
         assert a == b
     assert actual == solution
 
+def test_try_solving_linear_problems_only():
+    with pytest.raises(Exception) as exc:
+        q = "( 1 + 2x )( - x - 12 ) = - 1"
+
+        solver.solve(q)
+
+    assert str(exc.value) == "We can only solve linear problems at this point."
+
 # TODO: Use pytest machenisms to load test data.
 def get_target_solution(fname):
     solution = None

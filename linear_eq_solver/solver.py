@@ -10,6 +10,9 @@ def solve(q: str):
     lhs, rhs, substeps = simplify_expressions(lhs, rhs)
     steps.extend(substeps)
 
+    assert_linear_problem(lhs)
+    assert_linear_problem(rhs)
+
     lhs, rhs, substeps = eliminate_first_order_terms(lhs, rhs)
     steps.extend(substeps)
 
@@ -26,6 +29,10 @@ def solve(q: str):
     steps.append("\nSolution:")
     steps.append('{} = {}'.format(lhs, rhs))
     return lhs, rhs, steps
+
+def assert_linear_problem(poly):
+    if poly.order() > 1:
+        raise Exception("We can only solve linear problems at this point.")
 
 def simplify_expressions(lhs, rhs):
     steps = []
