@@ -10,11 +10,11 @@ if len(sys.argv) > 1:
     
     q = " ".join(question)
 
-print("Question: {}".format(q))
+print(f"Question: {q}")
 
 lhs, rhs, steps = linear_eq_solver.solve(q)
 
-print("\n\nSolution: {} = {}".format(lhs, rhs))
+print(f"\n\nSolution: {lhs} = {rhs}")
 
 print("\n\n\n\nComplete solution\n")
 for step in steps:

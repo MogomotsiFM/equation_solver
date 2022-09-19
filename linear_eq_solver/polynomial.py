@@ -50,7 +50,7 @@ class Polynomial(Monomial):
             monos = [ ts[0].mult(ts[1]) for ts in product(self.expression.values(), other.expression.values()) ]
             poly = build_polynomial( *monos )
             return poly
-        elif type(other) is int or type(other) is float or isinstance(other, Monomial):
+        elif isinstance(other, (int, float, Monomial)):
             tmp = Polynomial(self)
             for exponent, term in self.expression.items():
                 tmp.expression[exponent] = term.mult(other)
@@ -59,9 +59,8 @@ class Polynomial(Monomial):
 
     def __eq__(self, other):
         if isinstance(other, Polynomial):
-            return ( len(other.expression) == len(other.expression) and 
-                reduce(lambda p, mono: p and mono == other.get_monomial(mono.exponent), other.expression.values(), True)
-            )
+            equality = map( lambda mono: mono == self.get_monomial(mono.exponent), other.expression.values() )
+            return ( len(other.expression) == len(other.expression) and all(equality) )
         return False
 
     def __str__(self):
@@ -70,8 +69,8 @@ class Polynomial(Monomial):
         seen_non_zero_term = False
         is_first_term = True
 
-        # We need to ensure the terms of a Polynomial are printed a certain way 
-        # if our tests are to pass. 
+        # We need to ensure the terms of a Polynomial are printed a certain way
+        # if our tests are to pass.
         # Also, it is nicer if the higher order terms are printed first
         exponents = list(self.expression.keys())
         exponents.sort(reverse=True)

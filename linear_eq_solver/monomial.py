@@ -1,6 +1,12 @@
+"""
+Momomial is an term of the form: ax^n
+    The abstraction store the coefficient `a` and the exponent `n`
+    along with a set of allowed operations. 
+"""
+
 class Monomial:
     def __init__(self, coeff, exponent):
-        if type(coeff) in (int, float) and type(exponent) is int:
+        if type(coeff) in (int, float) and isinstance(exponent, int):
             self.coeff = coeff
             self.exponent = exponent
         else:
@@ -17,7 +23,7 @@ class Monomial:
         raise Exception("Only monomials of the same order may be minused.")
 
     def mult(self, other):
-        if type(other) is int or type(other) is float:
+        if isinstance(other, (int, float)):
             return Monomial(other*self.coeff, self.exponent)
         elif isinstance(other, Monomial):
             return Monomial(other.coeff*self.coeff, self.exponent+other.exponent)
@@ -28,14 +34,14 @@ class Monomial:
         str_ = "0"
         if self.coeff:
             if self.coeff > 0:
-                str_ = "{}".format(self.coeff)
+                str_ = f"{self.coeff}"
             else:
-                str_ = "- {}".format(-1*self.coeff)
+                str_ = f"- {-1*self.coeff}"
         
             if self.exponent == 1:
                 str_ = str_ + "x"
             elif self.exponent > 1:
-                str_ = str_ + "x^{}".format(self.exponent)
+                str_ = str_ + f"x^{self.exponent}"
 
         return str_
 

@@ -1,7 +1,16 @@
+"""
+Solves linear equations
+"""
+
 from linear_eq_solver import preprocess
 from linear_eq_solver import parse
 
 def solve(q: str):
+    """
+    Takes a linear equation
+    Returns the solution as a lhs and rhs pair
+        The third return value is a list of maths step taken in solving the problem
+    """
     steps = []
     steps.append(q)
 
@@ -22,12 +31,12 @@ def solve(q: str):
     first_order_coeff = lhs.get_monomial(1).coeff
     if first_order_coeff:
         d = 1/first_order_coeff
-        steps.append("\nDevide both sides by {}:".format(first_order_coeff))
+        steps.append(f"\nDevide both sides by {first_order_coeff}:")
         lhs = lhs.mult(d)
         rhs = rhs.mult(d)
         
     steps.append("\nSolution:")
-    steps.append('{} = {}'.format(lhs, rhs))
+    steps.append(f'{lhs} = {rhs}')
     return lhs, rhs, steps
 
 def assert_linear_problem(poly):
@@ -53,18 +62,18 @@ def eliminate_first_order_terms(lhs, rhs):
     a = rhs.get_monomial(1)
     if a.coeff:
         if a.coeff > 0:
-            steps.append("\nSubtract {} on both sides of the equal sign:".format(a))
-            steps.append('{} - {} = - {} + {}'.format(lhs, a, a, rhs))
+            steps.append(f"\nSubtract {a} on both sides of the equal sign:")
+            steps.append(f'{lhs} - {a} = - {a} + {rhs}')
         else:
             a_pos = a.mult(-1)
 
-            steps.append("\nAdd {} on both sides of the equal sign:".format(a_pos))
-            steps.append('{} + {} = {} {}'.format(lhs, a_pos, a_pos, rhs))
+            steps.append(f"\nAdd {a_pos} on both sides of the equal sign:")
+            steps.append(f'{lhs} + {a_pos} = {a_pos} {rhs}')
 
         steps.append("\nSimplify both sides:")
         lhs = lhs.subt( a )
         rhs = rhs.subt( a )
-        steps.append('{} = {}'.format(lhs, rhs))
+        steps.append(f'{lhs} = {rhs}')
 
     return lhs, rhs, steps
 
@@ -74,18 +83,18 @@ def eliminate_zeroth_order_terms(lhs, rhs):
     b = lhs.get_monomial(0)
     if b.coeff:
         if b.coeff > 0:
-            steps.append("\nSubtract {} on both sides of the equal sign:".format(b))
-            steps.append('{} - {} = {} - {}'.format(lhs, b, rhs, b))
+            steps.append(f"\nSubtract {b} on both sides of the equal sign:")
+            steps.append(f'{lhs} - {b} = {rhs} - {b}')
         else:
             b_pos = b.mult(-1)
 
-            steps.append("\nAdd {} on both sides of the equal sign:".format(b_pos))
-            steps.append('{} + {} = {} + {}'.format(lhs, b_pos, rhs, b_pos))
+            steps.append(f"\nAdd {b_pos} on both sides of the equal sign:")
+            steps.append(f'{lhs} + {b_pos} = {rhs} + {b_pos}')
             
         steps.append("\nSimplify both sides:")
         rhs = rhs.subt( b )
         lhs = lhs.subt( b )
-        steps.append('{} = {}'.format(lhs, rhs))
+        steps.append(f'{lhs} = {rhs}')
 
     return lhs, rhs, steps
 

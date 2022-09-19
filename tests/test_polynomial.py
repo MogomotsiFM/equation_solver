@@ -53,7 +53,7 @@ def test_polynomial_subtration_success():
 
     assert str(s) == '5x^8 - 7x^4 + 3x^2 + 2x'
 
-def test_polynomial_adding_monomial_succeeds():
+def test_polynomial_subtracting_monomial_succeeds():
     # "3x^2 + 5x^8"
     m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
 
@@ -102,3 +102,21 @@ def test_polynomial_with_polynomial_multiplication_success():
     s = m.mult(n)
 
     assert str(s) == '35x^12 - 10x^9 + 21x^6 - 6x^3'
+
+def test_unequal_polynomials():
+    # "3x^2 + 5x^8"
+    m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
+
+    # "3x^4 + 5x^8"
+    n = build_polynomial(Monomial(3, 4), Monomial(5, 8))
+
+    assert not n == m
+
+def test_equal_polynomials():
+    # "3x^2 + 5x^8"
+    m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
+
+    # "5x^8 + 3x^2"
+    n = build_polynomial(Monomial(5, 8), Monomial(3, 2))
+
+    assert n == m
