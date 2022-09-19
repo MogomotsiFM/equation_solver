@@ -1,9 +1,9 @@
 ### How it works?
-* The fundamental data structures are the `Monomial` and `Polynomial` classes.  a `Monomial = ax^n` as a coefficient `a` and an exponent `n`, along with the allowed operations. The composite design pattern is then used to represent a `Polynomial` in terms of the `Monomial` class. This should make it easier to extend to higher order polynomials. 
+* The fundamental data structures are the `Monomial` and `Polynomial` classes.  A `Monomial = ax^n` has a coefficient `a` and an exponent `n`, along with the allowed operations. The composite design pattern is then used to represent a `Polynomial` in terms of the `Monomial` class. This should make it easier to extend to higher order polynomials. 
     * Permited operations:
-        * Adding one `Monomial` or `Polynomial` to another. It is even possible to add `Monomial` to 
+        * Adding one `Monomial` or `Polynomial` to another. It is even possible to add a `Monomial` to 
         a `Polynomial`,
-        * Subracting one `Monomial` or `Polynomial` from another. It is even possible to subtract `Monomial` from a `Polynomial`,
+        * Subracting one `Monomial` or `Polynomial` from another. It is even possible to subtract a `Monomial` from a `Polynomial`,
         * Multiplying an `Monomial` or `Polynomial` by a scalar,
         * Tests for equality,
         * Printing an expressions.
