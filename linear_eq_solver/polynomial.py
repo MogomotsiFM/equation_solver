@@ -7,7 +7,7 @@ from linear_eq_solver import Monomial
 class Polynomial(Monomial):
     '''
     Uses a dictionary to represent a polynomial
-    The key is the exponent and the a Monomial
+    The key is the exponent and the value a Monomial
 
     This representation means that we are duplicating exponent data but it
     allows us to say a Polynomial has a number of Monomials
