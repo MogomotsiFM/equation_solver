@@ -96,6 +96,15 @@ def test_try_solving_linear_problems_only():
 
     assert str(exc.value) == "We can only solve linear problems at this point."
 
+def test_solver_missing_closing_bracket_reported():
+    with pytest.raises(Exception) as exc:
+        # (1 + 6)(x - 3
+        q = '( 1 + 6 )( x - 3'
+
+        solver.solve(q)
+
+    assert str(exc.value) == "Could not find matching closing bracket"
+
 # TODO: Use pytest machenisms to load test data.
 def get_target_solution(fname):
     solution = None
@@ -104,7 +113,7 @@ def get_target_solution(fname):
     try:
         with open(fname, 'r') as f:
             solution = f.readlines()
-    except:
+    except FileNotFoundError:
         fname = "tests/"+fname
         with open(fname, 'r') as f:
             solution = f.readlines()

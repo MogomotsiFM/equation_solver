@@ -121,6 +121,14 @@ def test_parser_multiplying_brackets():
 
     assert str(exp) == '7x - 21'
 
+def test_parser_multiple_multiplying_brackets():
+    # -2(x + 1)(x - 1)(-x + 1)
+    lst = ['-', '2(', 'x', '+', '1', ')(', 'x', '-', '1', ')(', '-', 'x', '+', '1', ')']
+
+    exp, _ = parse(lst)
+
+    assert str(exp) == '2x^3 - 2x^2 - 2x + 2'
+
 def test_parser_multiple_digits_multipliers():
     # 30(2x - 1) - 22x
     lst = ['30(', '2x', '-', '1', ')', '-', '22x']

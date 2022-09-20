@@ -19,7 +19,6 @@ def parse_(text, pos, m):
     i = pos
     while i<len(text):
         c = text[i]
-        print(f"{i}  {c}")
 
         if c.isdigit():
             mono = Monomial(int(c), 0)
