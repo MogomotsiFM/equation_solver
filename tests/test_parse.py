@@ -128,3 +128,12 @@ def test_parser_multiple_digits_multipliers():
     exp, _ = parse(lst)
 
     assert str(exp) == "38x - 30"
+
+def test_missing_closing_bracket_reported():
+    with pytest.raises(Exception) as exc:
+        # (1 + 6)(x - 3
+        lst = ['(', '1', '+', '6', ')(', 'x', '-', '3']
+
+        parse(lst)
+
+    assert str(exc.value) == "Could not find matching closing bracket"

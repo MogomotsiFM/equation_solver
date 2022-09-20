@@ -1,4 +1,5 @@
 import functools
+from tkinter import N
 
 from linear_eq_solver.monomial import Monomial
 from linear_eq_solver.polynomial import Polynomial
@@ -18,6 +19,7 @@ def parse_(text, pos, m):
     i = pos
     while i<len(text):
         c = text[i]
+        print(f"{i}  {c}")
 
         if c.isdigit():
             mono = Monomial(int(c), 0)
@@ -63,6 +65,13 @@ def parse_(text, pos, m):
                     mult = int(c[:-1])
 
             (i, exp, sub_steps) = parse_(text, i+1, mult)
+            
+            # Did we find a matching closing bracket
+            i_hack = i + 1
+            
+            if i>=len(text) or (not ')' in text[i] and i_hack<len(text) and not '#' in text[i_hack]):
+                raise Exception("Could not find matching closing bracket")
+
             steps.extend(sub_steps)
             
             operands.append(exp)
