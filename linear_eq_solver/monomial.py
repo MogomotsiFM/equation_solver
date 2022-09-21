@@ -6,9 +6,11 @@ Momomial is an term of the form: ax^n
 
 class Monomial:
     def __init__(self, coeff, exponent):
-        if type(coeff) in (int, float) and isinstance(exponent, int):
+        if type(coeff) in (int, float) and isinstance(exponent, int) and exponent >= 0:
             self.coeff = coeff
             self.exponent = exponent
+        elif exponent < 0:
+            raise Exception("All exponents should be non-negative")
         else:
             raise Exception("Both coeff and exp should be integers.")
 

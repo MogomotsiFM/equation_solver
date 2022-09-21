@@ -94,7 +94,7 @@ def test_try_solving_linear_problems_only():
 
         solver.solve(q)
 
-    assert str(exc.value) == "We can only solve linear problems at this point."
+    assert str(exc.value) == "Trying to solve a higher order equation with a linear solver"
 
 def test_solver_missing_closing_bracket_reported():
     with pytest.raises(Exception) as exc:

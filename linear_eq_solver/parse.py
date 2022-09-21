@@ -24,11 +24,7 @@ def parse_(text, pos, m):
             mono = Monomial(int(c), 0)
             operands.append( Polynomial(mono).mult(m) )
         elif 'x' in c:
-            coeff = 1
-            if len(c) > 1:
-                coeff = c[:-1]
-
-            mono = Monomial(int(coeff), 1)
+            mono = retrieve_coefficient(c)
             operands.append( Polynomial(mono).mult(m) )
         elif c in "-+":
             if c == '-' and i == start: #The leading term is negative
@@ -99,6 +95,11 @@ def parse_(text, pos, m):
 
     return (i, simple_expr, steps)
 
+def retrieve_coefficient(term):
+    coeff = 1
+    if len(term) > 1:
+        coeff = term[:-1]
+    return Monomial(int(coeff), 1)
 
 def generate_step(operands: list, operators: list):
     step = ""

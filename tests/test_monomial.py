@@ -20,6 +20,12 @@ def test_monomial_set_correctly2():
 
     assert str(m) == '3x^5'
 
+def test_monomial_negative_exponent_not_allowed():
+    with pytest.raises(Exception) as exc:
+        Monomial(3, -1)
+
+    assert str(exc.value) == "All exponents should be non-negative"
+
 def test_monomial_valid_addition():
     "3x + 5x"
     m = Monomial(3, 1)
