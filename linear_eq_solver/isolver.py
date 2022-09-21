@@ -4,8 +4,10 @@ class ISolver:
     """
     Base class for equation solvers
     """
-    def __init__(self):
-        raise Exception("You may not create an instance of an abstract class")
+    def __new__(cls, *args, **kwargs):
+        if cls is ISolver:
+            raise TypeError(f"Only children of '{cls.__name__}' may be instantiated")
+        return object.__new__(cls, *args, **kwargs)
 
     def solve(self, lhs: Polynomial, rhs: Polynomial):
-        pass
+        raise NotImplementedError
