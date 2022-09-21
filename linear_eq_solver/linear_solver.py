@@ -1,6 +1,7 @@
 from linear_eq_solver import ISolver
 
 from linear_eq_solver import Polynomial
+from linear_eq_solver import Solution
 
 class LinearSolver(ISolver):
     """
@@ -33,7 +34,10 @@ class LinearSolver(ISolver):
 
             steps.append(f"{self.lhs} = {self.rhs}")
 
-        return self.lhs, self.rhs, steps
+        sol = []
+        sol.append(Solution(self.lhs, self.rhs))
+
+        return sol, steps
 
     def assert_linear_problem(self):
         if self.lhs.order() > 1 or self.rhs.order() > 1:
