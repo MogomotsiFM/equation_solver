@@ -49,7 +49,8 @@ def parse_(text, pos, m):
         elif '(' in c:
             seenOpenningBracket = True
             
-            steps.append("\nDistribute:")
+            if start == 0:
+                steps.append("\nDistribute:")
             
             mult = 1
             if len(c) > 1:
