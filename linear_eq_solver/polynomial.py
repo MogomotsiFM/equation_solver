@@ -26,11 +26,11 @@ class Polynomial(Monomial):
             tmp = Polynomial(self)
             for exponent, term in other.expression.items():
                 tmp.expression[exponent] = tmp.get_monomial(exponent).add(term)
-            return tmp
+            return tmp.simplify()
         elif isinstance(other, Monomial):
             tmp = Polynomial(self)
             tmp.expression[other.exponent] = tmp.get_monomial(other.exponent).add(other)
-            return tmp
+            return tmp.simplify()
         raise Exception("A poly may be added to another poly or monomial.") 
             
     def subt(self, other):
@@ -38,29 +38,30 @@ class Polynomial(Monomial):
             tmp = Polynomial(self)
             for exponent, term in other.expression.items():
                 tmp.expression[exponent] = tmp.get_monomial(exponent).subt(term)
-            return tmp
+            return tmp.simplify()
         elif isinstance(other, Monomial):
             tmp = Polynomial(self)
             tmp.expression[other.exponent] = tmp.get_monomial(other.exponent).subt(other)
-            return tmp
+            return tmp.simplify()
         raise Exception("A poly may be subtracted from another poly or Monomial.")
 
     def mult(self, other):
         if isinstance(other, Polynomial):
             monos = [ ts[0].mult(ts[1]) for ts in product(self.expression.values(), other.expression.values()) ]
             poly = build_polynomial( *monos )
-            return poly
+            return poly.simplify()
         elif isinstance(other, (int, float, Monomial)):
             tmp = Polynomial(self)
             for exponent, term in self.expression.items():
                 tmp.expression[exponent] = term.mult(other)
-            return tmp
+            return tmp.simplify()
         raise Exception("A poly may be multiplied with a number or Monomial.")
 
     def __eq__(self, other):
         if isinstance(other, Polynomial):
-            equality = map( lambda mono: mono == self.get_monomial(mono.exponent), other.expression.values() )
-            return ( len(other.expression) == len(other.expression) and all(equality) )
+            res = self.add( other.mult(-1) )
+            
+            return len(res.expression) == 1 and res.get_monomial(res.order()).coeff == 0
         return False
 
     def __str__(self):
@@ -105,6 +106,13 @@ class Polynomial(Monomial):
     def order(self):
         return max(self.expression.keys())
 
+    def simplify(self):
+        order = self.order()
+        while(  self.get_monomial(order).coeff == 0 and len(self.expression) > 1 ):
+            self.expression.pop(order)
+            order = self.order()
+
+        return self
 
 def build_polynomial(*args):
     initial = Polynomial(Monomial(0, 0))

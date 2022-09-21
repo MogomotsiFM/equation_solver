@@ -120,3 +120,11 @@ def test_equal_polynomials():
     n = build_polynomial(Monomial(5, 8), Monomial(3, 2))
 
     assert n == m
+
+def test_equality_symmetric():
+    # x^2 + 1 ? x^2 + 2x + 1
+    m = build_polynomial(Monomial(1, 2), Monomial(1, 0))
+    n = build_polynomial(Monomial(1, 2), Monomial(2, 1), Monomial(1, 0))
+
+    assert m != n
+    assert n != m
