@@ -97,9 +97,21 @@ def parse_(text, pos, m):
 
 def retrieve_coefficient(term):
     coeff = 1
+    # We got here because we found x in the term
+    exp   = 1
     if len(term) > 1:
-        coeff = term[:-1]
-    return Monomial(int(coeff), 1)
+        idx = term.find('x')
+        if idx > 0:
+            coeff = term[:idx]
+
+        # Find the exponent: ax^b
+        idx = term.find('^')
+        if idx > 0:
+            if (idx+1) < len(term):
+                exp = term[idx+1:]
+            else:
+                raise Exception("Ill-formatted input: Ensure there is a number right after ^")
+    return Monomial(int(coeff), int(exp))
 
 def generate_step(operands: list, operators: list):
     step = ""

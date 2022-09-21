@@ -1,6 +1,8 @@
 import pytest
 
 from linear_eq_solver import parse
+from linear_eq_solver import Monomial
+from linear_eq_solver.polynomial import build_polynomial
 
 def test_parser_no_simplification_required():
     # 2x - 1
@@ -137,7 +139,7 @@ def test_parser_multiple_digits_multipliers():
 
     assert str(exp) == "38x - 30"
 
-def test_missing_closing_bracket_reported():
+def test_parser_missing_closing_bracket_reported():
     with pytest.raises(Exception) as exc:
         # (1 + 6)(x - 3
         lst = ['(', '1', '+', '6', ')(', 'x', '-', '3']
@@ -145,3 +147,21 @@ def test_missing_closing_bracket_reported():
         parse(lst)
 
     assert str(exc.value) == "Could not find matching closing bracket"
+
+def test_parser_read_higher_order_terms_correctly():
+    # 13x^50 + 2
+    lst = ['113x^50', '+', '2']
+
+    exp, _ = parse(lst)
+
+    assert str(exp) == '113x^50 + 2'
+    assert exp == build_polynomial(Monomial(113, 50), Monomial(2, 0))
+
+def test_parser_expected_but_missing_exponent_failure():
+    with pytest.raises(Exception) as exc:
+        # 13x^ + 2
+        lst = ['113x^', '+', '2']
+
+        parse(lst)
+
+    assert str(exc.value) == "Ill-formatted input: Ensure there is a number right after ^"
