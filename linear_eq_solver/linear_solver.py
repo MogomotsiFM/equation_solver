@@ -3,6 +3,9 @@ from linear_eq_solver import ISolver
 from linear_eq_solver import Polynomial
 
 class LinearSolver(ISolver):
+    """
+    Solver for equations of the form: ax + b = mx + c
+    """
     def __init__(self):
         self.lhs = None
         self.rhs = None
