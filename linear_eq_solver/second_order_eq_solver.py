@@ -50,12 +50,12 @@ class SecondOrderEqSolver(ISolver):
 
     def assert_second_order_equation(self):
         if self.lhs.order() > 2:
-            raise Exception("Failure: Trying to use a second order solver for a higher order problem")
+            raise Exception("Trying to use a second order solver for a higher order problem")
         
-        if self.lhs.get_monomial(2) == 0:
+        if self.lhs.get_monomial(2).coeff == 0:
             raise Exception("Attempting to solve a linear equation with a second order solver")
 
-    def compute_factors(self, coeff):
+    def generate_factors(self, coeff):
         steps = []
 
         M = int(math.sqrt(math.fabs(coeff))) + 1
@@ -86,12 +86,12 @@ class SecondOrderEqSolver(ISolver):
     def solve_general_case(self):
         steps = []
 
-        steps.append("\nCompute factors of the coefficient of the x^2")
-        x_factors, substeps = self.compute_factors( self.lhs.get_monomial(2).coeff )
+        steps.append("\Generate factors of the coefficient of the x^2")
+        x_factors, substeps = self.generate_factors( self.lhs.get_monomial(2).coeff )
         steps.extend(substeps)
 
-        steps.append("\nCompute factors of the constant term")
-        c_factors, substeps = self.compute_factors( self.lhs.get_monomial(0).coeff )
+        steps.append("\Generate factors of the constant term")
+        c_factors, substeps = self.generate_factors( self.lhs.get_monomial(0).coeff )
         steps.extend(substeps)
 
         steps.append("\nTest all the permutations until we find the one that solve the problem")
@@ -103,8 +103,6 @@ class SecondOrderEqSolver(ISolver):
             steps.append(f"    x factors = {x}, constant factors = {c}, sol = {sol_poly}")
             
             if sol_poly == self.lhs:
-                print(f"Here:   {sol_poly}        {self.lhs}    {sol_poly == self.lhs}")
-
                 steps.append("\nFound the combination that solves our problem:")
                     
                 steps.append("\nFactorize:")
@@ -123,9 +121,60 @@ class SecondOrderEqSolver(ISolver):
                     
                 return sol_list1, steps
 
-        print("Solution does not exist")
-        steps.append("\nSolution does not exist")
+        # Maybe the solutions are not whole numbers
+        return self.completing_the_square()
+
+    def completing_the_square(self):
+        steps = []
+
+        x2_coeff = self.lhs.get_monomial(2).coeff
+        if x2_coeff != 1:
+            steps.append(f"\nDevide by the coefficient of x^2: {x2_coeff}")
+            self.lhs.mult(1/x2_coeff)
+            self.rhs.mult(1/x2_coeff)
+            steps.append(f"{self.lhs} = {self.rhs}")
+
+        steps.append("\nMove the constant to the LHS:")
+        const  = self.lhs.get_monomial(0)
+        self.lhs = self.lhs.subt(const)
+        self.rhs = self.rhs.subt(const)
+        steps.append(f"{self.lhs} = {self.rhs}")
+
+        x_coeff = self.lhs.get_monomial(1).coeff
+        steps.append(f"\nSquare  half the coefficient of x and add to both sides: ({x_coeff/2})^2")
+        steps.append(f"{self.lhs} + ({x_coeff}/2)^2 = {self.rhs} + ({x_coeff}/2)^2")
+        
+        sq_term = Monomial(x_coeff * x_coeff/4, 0)
+        self.lhs = self.lhs.add(sq_term)
+        self.rhs = self.rhs.add(sq_term)
+
+        poly_lhs = build_polynomial(Monomial(1, 1), Monomial(x_coeff/2, 0))
+        poly_rhs = self.rhs
+
+        steps.append("\nFactorize the RHS")
+        steps.append(f"({poly_lhs})({poly_lhs}) = {poly_rhs}")
+
+        steps.append("\nSimplify")
+        steps.append(f"({poly_lhs})^2 = {poly_rhs}")      
+        
+        if self.rhs.get_monomial(0).coeff > 0:
+            sqrt = math.sqrt(self.rhs.get_monomial(0).coeff)
+            steps.append("\nTake the square root of both sides")
+            steps.append(f"{poly_lhs} = {sqrt}    OR    {poly_lhs} = - {sqrt}")
+
+            steps.append(f"\nSolve: {poly_lhs} = {sqrt}")
+            sol_list1, substeps = LinearSolver().solve(poly_lhs, Poly(Monomial(sqrt, 0)))
+            steps.extend(substeps)
+
+            steps.append(f"\nSolve: {poly_lhs} = {sqrt}")
+            sol_list2, substeps = LinearSolver().solve(poly_lhs, Poly(Monomial(-1*sqrt, 0)))
+            steps.extend(substeps)
+
+            sol_list1.extend(sol_list2)
+                    
+            return sol_list1, steps
+        else:
+            steps.append("\nSolution does not exist")
+
         return [], steps
 
-    #def solve_linear_problems(self):
-        
