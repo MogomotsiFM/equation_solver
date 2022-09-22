@@ -1,7 +1,7 @@
 import pytest
 
-from linear_eq_solver import Solution
-from linear_eq_solver import Monomial as Mono, second_order_eq_solver
+from linear_eq_solver import Solution, quadratic_eq_solver
+from linear_eq_solver import Monomial as Mono
 from linear_eq_solver import Polynomial as Poly
 from linear_eq_solver.polynomial import build_polynomial
 
@@ -10,7 +10,7 @@ def test_2nd_solver_simple():
     lhs = build_polynomial(Mono(1, 2), Mono(-2, 1), Mono(1, 0))
     rhs = Poly(Mono(0, 0))
 
-    sol, _ = second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
+    sol, _ = quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
 
     target = [Solution(Poly(Mono(1, 1)), Poly(Mono(1, 0))), Solution(Poly(Mono(1, 1)), Poly(Mono(1, 0)))]
 
@@ -21,7 +21,7 @@ def test_2nd_solve_degenerate_case():
     rhs = build_polynomial(Mono(1, 2), Mono(-5, 1))
     lhs = Poly(Mono(0, 0))
 
-    sol, _ = second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
+    sol, _ = quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
 
     target = [Solution(Poly(Mono(1, 1)), Poly(Mono(0, 0))), Solution(Poly(Mono(1, 1)), Poly(Mono(5, 0)))]
 
@@ -34,7 +34,7 @@ def test_2nd_solution_normalization_require():
     lhs = build_polynomial(Mono(1, 2), Mono(-2, 1), Mono(3, 0))
     rhs = build_polynomial(Mono(2, 2), Mono(-4, 1))
 
-    sol, _ = second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
+    sol, _ = quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
 
     target = [Solution(Poly(Mono(1, 1)), Poly(Mono(-1, 0))), Solution(Poly(Mono(1, 1)), Poly(Mono(3, 0)))]
 
@@ -45,7 +45,7 @@ def test_2nd_solution_does_not_exist():
     lhs = build_polynomial(Mono(1, 2), Mono(1, 0))
     rhs = Poly(Mono(0, 0))
 
-    sol, _ = second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
+    sol, _ = quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
 
     assert sol == []
 
@@ -55,7 +55,7 @@ def test_2nd_rejects_problems_of_order_3_and_higher():
         lhs = build_polynomial(Mono(1, 4), Mono(1, 0))
         rhs = Poly(build_polynomial(Mono(1, 1), Mono(-2, 0)).mult(3))
 
-        second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
+        quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
 
     assert str(exc.value) == "Trying to use a second order solver for a higher order problem"
 
@@ -65,7 +65,7 @@ def test_2nd_rejects_lower_order_problems():
         lhs = build_polynomial(Mono(1, 1), Mono(1, 0))
         rhs = Poly(build_polynomial(Mono(1, 1), Mono(-2, 0)).mult(3))
 
-        second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
+        quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
 
     assert str(exc.value) == "Attempting to solve a linear equation with a second order solver"
 
