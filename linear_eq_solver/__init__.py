@@ -6,6 +6,6 @@ from linear_eq_solver.preprocess import preprocess
 from linear_eq_solver.isolver import ISolver
 from linear_eq_solver.solution import Solution
 from linear_eq_solver.linear_solver import LinearSolver
-from linear_eq_solver.second_order_eq_solver import SecondOrderEqSolver
+from linear_eq_solver.quadratic_eq_solver import QuadraticEqSolver
 from linear_eq_solver.solver import solve
 

@@ -9,7 +9,7 @@ from linear_eq_solver import build_polynomial
 
 from linear_eq_solver import LinearSolver
 
-class SecondOrderEqSolver(ISolver):
+class QuadraticEqSolver(ISolver):
     def __init__(self):
         self.rhs = None
         self.lhs = None
@@ -86,11 +86,11 @@ class SecondOrderEqSolver(ISolver):
     def solve_general_case(self):
         steps = []
 
-        steps.append("\Generate factors of the coefficient of the x^2")
+        steps.append("\nGenerate factors of the coefficient of the x^2")
         x_factors, substeps = self.generate_factors( self.lhs.get_monomial(2).coeff )
         steps.extend(substeps)
 
-        steps.append("\Generate factors of the constant term")
+        steps.append("\nGenerate factors of the constant term")
         c_factors, substeps = self.generate_factors( self.lhs.get_monomial(0).coeff )
         steps.extend(substeps)
 
