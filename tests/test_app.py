@@ -15,7 +15,10 @@ if len(sys.argv) > 1:
 print(f"Question: {q}")
 
 #lhs, rhs, steps = linear_eq_solver.solve(q)
-lhs, rhs, steps = linear_eq_solver.solve(q)
+sol, steps = linear_eq_solver.solve(q)
+
+lhs = sol[0].lhs
+rhs = sol[0].rhs
 
 print(f"\n\nSolution: {lhs} = {rhs}")
 

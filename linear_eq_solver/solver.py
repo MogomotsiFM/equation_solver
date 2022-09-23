@@ -5,7 +5,7 @@ Solves linear equations
 from linear_eq_solver import preprocess
 from linear_eq_solver import parse
 from linear_eq_solver import linear_solver
-from linear_eq_solver import second_order_eq_solver
+from linear_eq_solver import quadratic_eq_solver
 
 def solve(q: str):
     """
@@ -29,7 +29,7 @@ def solve(q: str):
         steps.extend(substeps)
     elif max(lhs.order(), rhs.order()) == 2:
         print("Second order problem")
-        sol, substeps = second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
+        sol, substeps = quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
 
         steps.extend(substeps)
     else:
