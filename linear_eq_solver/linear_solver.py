@@ -31,6 +31,8 @@ class LinearSolver(ISolver):
             self.lhs = self.lhs.mult(d)
             self.rhs = self.rhs.mult(d)
 
+            steps.append(f"{self.lhs} = {self.rhs}")
+
         return self.lhs, self.rhs, steps
 
     def assert_linear_problem(self):

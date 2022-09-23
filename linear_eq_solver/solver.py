@@ -2,9 +2,10 @@
 Solves linear equations
 """
 
-from linear_eq_solver import preprocess
+from linear_eq_solver import preprocess, second_order_eq_solver
 from linear_eq_solver import parse
 from linear_eq_solver import linear_solver
+from linear_eq_solver import second_order_eq_solver
 
 def solve(q: str):
     """
@@ -21,7 +22,13 @@ def solve(q: str):
     steps.extend(substeps)
 
     lhs, rhs, substeps = linear_solver.LinearSolver().solve(lhs, rhs)
+    #sol, _, substeps = second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
     steps.extend(substeps)
+
+    #if len(sol) == 2:
+    #    lhs = sol[0]
+    #    rhs = sol[1]
+    
 
     steps.append("\nSolution:")
     steps.append(f'{lhs} = {rhs}')
