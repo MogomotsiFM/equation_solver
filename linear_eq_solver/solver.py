@@ -2,7 +2,7 @@
 Solves linear equations
 """
 
-from linear_eq_solver import preprocess, second_order_eq_solver
+from linear_eq_solver import preprocess
 from linear_eq_solver import parse
 from linear_eq_solver import linear_solver
 from linear_eq_solver import second_order_eq_solver
@@ -21,18 +21,25 @@ def solve(q: str):
     lhs, rhs, substeps = simplify_expressions(lhs, rhs)
     steps.extend(substeps)
 
-    lhs, rhs, substeps = linear_solver.LinearSolver().solve(lhs, rhs)
-    #sol, _, substeps = second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
-    steps.extend(substeps)
+    sol = None
+    if max(lhs.order(), rhs.order()) == 1:
+        print("First order problem")
+        sol, substeps = linear_solver.LinearSolver().solve(lhs, rhs)
+        
+        steps.extend(substeps)
+    elif max(lhs.order(), rhs.order()) == 2:
+        print("Second order problem")
+        sol, substeps = second_order_eq_solver.SecondOrderEqSolver().solve(lhs, rhs)
 
-    #if len(sol) == 2:
-    #    lhs = sol[0]
-    #    rhs = sol[1]
-    
+        steps.extend(substeps)
+    else:
+        raise Exception("Trying to solve order 3 or more problem, good luck with that")
 
     steps.append("\nSolution:")
-    steps.append(f'{lhs} = {rhs}')
-    return lhs, rhs, steps
+    solution = [f'{a.get_lhs()} = {a.get_rhs()}' for a in sol]
+    steps.append('    OR    '.join(solution))
+
+    return sol, steps
 
 def simplify_expressions(lhs, rhs):
     steps = []
