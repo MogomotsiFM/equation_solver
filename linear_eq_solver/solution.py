@@ -13,3 +13,6 @@ class Solution:
 
     def get_rhs(self):
         return self.rhs
+
+    def __str__(self):
+        return f"{self.lhs} = {self.rhs}"
