@@ -2,6 +2,8 @@ import copy
 from functools import reduce
 from itertools import product
 
+from decimal import Decimal
+
 from linear_eq_solver import Monomial
 
 class Polynomial(Monomial):
@@ -50,12 +52,20 @@ class Polynomial(Monomial):
             monos = [ ts[0].mult(ts[1]) for ts in product(self.expression.values(), other.expression.values()) ]
             poly = build_polynomial( *monos )
             return poly.simplify()
-        elif isinstance(other, (int, float, Monomial)):
+        elif isinstance(other, (int, float, Decimal, Monomial)):
             tmp = Polynomial(self)
             for exponent, term in self.expression.items():
                 tmp.expression[exponent] = term.mult(other)
             return tmp.simplify()
         raise Exception("A poly may be multiplied with a number or Monomial.")
+
+    def div(self, other):
+        if isinstance(other, (int, float, Decimal, Monomial)):
+            tmp = Polynomial(self)
+            for exponent, term in self.expression.items():
+                tmp.expression[exponent] = term.div(other)
+            return tmp.simplify()
+        raise Exception("A poly may be divided with a number or Monomial.")
 
     def __eq__(self, other):
         if isinstance(other, Polynomial):

@@ -29,8 +29,10 @@ class LinearSolver(ISolver):
         if first_order_coeff:
             d = 1/first_order_coeff
             steps.append(f"\nDevide both sides by {first_order_coeff}:")
-            self.lhs = self.lhs.mult(d)
-            self.rhs = self.rhs.mult(d)
+            # self.lhs = self.lhs.mult(d)
+            # self.rhs = self.rhs.mult(d)
+            self.lhs = self.lhs.div(first_order_coeff)
+            self.rhs = self.rhs.div(first_order_coeff)
 
             steps.append(f"{self.lhs} = {self.rhs}")
 

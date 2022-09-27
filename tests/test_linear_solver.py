@@ -61,7 +61,7 @@ def test_linear_solver_not_so_simple_case_negative_x_coeff():
 
     assert sol[0].lhs == Polynomial(Monomial( 1, 1))
     assert str(sol[0].rhs) == "- 0.9"
-    assert sol[0].rhs == Polynomial(Monomial(-0.9, 0))
+    assert sol[0].rhs == Polynomial(Monomial(-9, 0).div(10))
 
 def test_linear_solver_solution_does_not_exist():
     # 7x - 2 = 7x
