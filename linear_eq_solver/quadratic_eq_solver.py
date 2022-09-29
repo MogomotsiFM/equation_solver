@@ -69,9 +69,7 @@ class QuadraticEqSolver(ISolver):
         steps = []
 
         steps.append("\nFactor out x")
-        t1 = self.lhs.get_monomial(2)
-        t2 = self.lhs.get_monomial(1)
-        poly = build_polynomial(Monomial(t1.coeff, 1), Monomial(t2.coeff, 0))
+        poly = self.lhs.div(Monomial(1, 1))
         steps.append(f"x = 0    OR   {poly} = 0")
 
         steps.append("\nSolve the linear problem")

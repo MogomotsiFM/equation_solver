@@ -61,9 +61,10 @@ class Polynomial(Monomial):
 
     def div(self, other):
         if isinstance(other, (int, float, Decimal, Monomial)):
-            tmp = Polynomial(self)
-            for exponent, term in self.expression.items():
-                tmp.expression[exponent] = term.div(other)
+            tmp = Polynomial(Monomial(0, 0))
+            for term in self.expression.values():
+                t = term.div(other)
+                tmp.expression[t.exponent] = t
             return tmp.simplify()
         raise Exception("A poly may be divided with a number or Monomial.")
 

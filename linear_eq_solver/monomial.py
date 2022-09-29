@@ -12,6 +12,9 @@ class Monomial:
         if type(coeff) in (int, float, Decimal) and isinstance(exponent, int) and exponent >= 0:
             self.coeff = Decimal(coeff)
             self.exponent = exponent
+        elif exponent < 0 and coeff == 0:
+            self.coeff = Decimal(0)
+            self.exponent = exponent
         elif exponent < 0:
             raise Exception("All exponents should be non-negative")
         else:
