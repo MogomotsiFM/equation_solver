@@ -1,5 +1,4 @@
 import functools
-from tkinter import N
 
 from linear_eq_solver.monomial import Monomial
 from linear_eq_solver.polynomial import Polynomial

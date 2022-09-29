@@ -1,3 +1,5 @@
+import math
+
 from linear_eq_solver import ISolver
 
 from linear_eq_solver import Polynomial
@@ -26,11 +28,8 @@ class LinearSolver(ISolver):
         steps.extend(substeps)
 
         first_order_coeff = self.lhs.get_monomial(1).coeff
-        if first_order_coeff:
-            d = 1/first_order_coeff
+        if math.fabs(first_order_coeff) > 1:
             steps.append(f"\nDevide both sides by {first_order_coeff}:")
-            # self.lhs = self.lhs.mult(d)
-            # self.rhs = self.rhs.mult(d)
             self.lhs = self.lhs.div(first_order_coeff)
             self.rhs = self.rhs.div(first_order_coeff)
 
