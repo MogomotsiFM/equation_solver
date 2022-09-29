@@ -41,16 +41,18 @@ def solve(q: str):
 
     return sol, steps
 
-def simplify_expressions(lhs, rhs):
+def simplify_expressions(lhs_, rhs_):
     steps = []
 
-    steps.append("\nSimplify LHS:")
-    lhs, lhs_sub_steps = parse(lhs)
-    steps.extend(append_rhs(lhs_sub_steps, " ".join(rhs)))
+    lhs, lhs_sub_steps = parse(lhs_)
+    if str(lhs) != ' '.join(lhs_):
+        steps.append("\nSimplify LHS:")
+        steps.extend(append_rhs(lhs_sub_steps, " ".join(rhs_)))
     
-    steps.append("\nSimplify RHS:")
-    rhs, rhs_sub_steps = parse(rhs)
-    steps.extend(append_lhs(rhs_sub_steps, lhs))
+    rhs, rhs_sub_steps = parse(rhs_)
+    if str(rhs) != ' '.join(rhs_):
+        steps.append("\nSimplify RHS:")
+        steps.extend(append_lhs(rhs_sub_steps, lhs))
 
     return lhs, rhs, steps
 

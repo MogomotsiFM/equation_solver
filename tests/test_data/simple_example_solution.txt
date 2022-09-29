@@ -1,11 +1,5 @@
 7x - 2 = 19
 
-Simplify LHS:
-7x - 2 = 19
-
-Simplify RHS:
-7x - 2 = 19
-
 Add 2 on both sides of the equal sign:
 7x - 2 + 2 = 19 + 2
 
