@@ -126,6 +126,9 @@ class Polynomial(Monomial):
         return self
 
 def build_polynomial(*args):
+    """
+    Takes a list of Polynomial and Monomials and add them together to build a Polynomial
+    """
     initial = Polynomial(Monomial(0, 0))
     poly = reduce( lambda part, term: part.add(term), args, initial )
 

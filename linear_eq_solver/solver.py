@@ -4,8 +4,7 @@ Solves linear equations
 
 from linear_eq_solver import preprocess
 from linear_eq_solver import parse
-from linear_eq_solver import linear_solver
-from linear_eq_solver import quadratic_eq_solver
+from linear_eq_solver import solver_factory
 
 def solve(q: str):
     """
@@ -13,6 +12,7 @@ def solve(q: str):
     Returns the solution as a lhs and rhs pair
         The third return value is a list of maths step taken in solving the problem
     """
+
     steps = []
     steps.append(q)
 
@@ -22,19 +22,17 @@ def solve(q: str):
     steps.extend(substeps)
 
     sol = None
-    if max(lhs.order(), rhs.order()) == 1:
-        print("First order problem")
-        sol, substeps = linear_solver.LinearSolver().solve(lhs, rhs)
-        
+    order = max(lhs.order(), rhs.order())
+    solver = solver_factory(order)
+    sol, substeps = solver.solve(lhs, rhs)
+    steps.extend(substeps)
+    """try:
+        solver = solver_factory(order)
+        sol, substeps = solver.solve(lhs, rhs)
         steps.extend(substeps)
-    elif max(lhs.order(), rhs.order()) == 2:
-        print("Second order problem")
-        sol, substeps = quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
-
-        steps.extend(substeps)
-    else:
+    except ValueError:
         raise Exception("Trying to solve order 3 or more problem, good luck with that")
-
+    """
     steps.append("\nSolution:")
     solution = [f'{a.get_lhs()} = {a.get_rhs()}' for a in sol]
     steps.append('    OR    '.join(solution))
