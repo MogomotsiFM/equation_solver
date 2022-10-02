@@ -21,18 +21,11 @@ def solve(q: str):
     lhs, rhs, substeps = simplify_expressions(lhs, rhs)
     steps.extend(substeps)
 
-    sol = None
     order = max(lhs.order(), rhs.order())
     solver = solver_factory(order)
     sol, substeps = solver.solve(lhs, rhs)
     steps.extend(substeps)
-    """try:
-        solver = solver_factory(order)
-        sol, substeps = solver.solve(lhs, rhs)
-        steps.extend(substeps)
-    except ValueError:
-        raise Exception("Trying to solve order 3 or more problem, good luck with that")
-    """
+
     steps.append("\nSolution:")
     solution = [f'{a.get_lhs()} = {a.get_rhs()}' for a in sol]
     steps.append('    OR    '.join(solution))
