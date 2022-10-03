@@ -1,8 +1,8 @@
 import pytest
 
-from linear_eq_solver import solver
-from linear_eq_solver import Monomial
-from linear_eq_solver import Polynomial
+from equation_solver import solver
+from equation_solver import Monomial
+from equation_solver import Polynomial
 
 def test_simple_case():
     # 7x - 2 = 19

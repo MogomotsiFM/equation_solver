@@ -1,8 +1,8 @@
 import pytest
 
-from linear_eq_solver import linear_solver
-from linear_eq_solver import quadratic_eq_solver
-from linear_eq_solver import solver_factory
+from equation_solver import linear_solver
+from equation_solver import quadratic_eq_solver
+from equation_solver import solver_factory
 
 def test_solver_factory_non_equation():
     solver_factory(0)

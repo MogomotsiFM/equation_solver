@@ -1,4 +1,4 @@
-from linear_eq_solver import preprocess
+from equation_solver import preprocess
 
 def test_preprocess_simple():
     # 7x - 2 = 21

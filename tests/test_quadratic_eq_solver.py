@@ -1,9 +1,9 @@
 import pytest
 
-from linear_eq_solver import Solution, quadratic_eq_solver
-from linear_eq_solver import Monomial as Mono
-from linear_eq_solver import Polynomial as Poly
-from linear_eq_solver.polynomial import build_polynomial
+from equation_solver import Solution, quadratic_eq_solver
+from equation_solver import Monomial as Mono
+from equation_solver import Polynomial as Poly
+from equation_solver.polynomial import build_polynomial
 
 def test_2nd_solver_simple():
     # x^2 - 2x + 1 = 0

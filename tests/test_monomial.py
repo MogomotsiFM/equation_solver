@@ -1,5 +1,5 @@
 import pytest
-from linear_eq_solver import Monomial
+from equation_solver import Monomial
 
 def test_monomial_set_correctly():
     "q = 3x"

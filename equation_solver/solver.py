@@ -2,9 +2,9 @@
 Solves linear equations
 """
 
-from linear_eq_solver import preprocess
-from linear_eq_solver import parse
-from linear_eq_solver import solver_factory
+from equation_solver import preprocess
+from equation_solver import parse
+from equation_solver import solver_factory
 
 def solve(q: str):
     """

@@ -1,13 +1,13 @@
 import math
 import itertools
 
-from linear_eq_solver import ISolver
-from linear_eq_solver import Solution
-from linear_eq_solver import Monomial
-from linear_eq_solver import Polynomial as Poly
-from linear_eq_solver import build_polynomial
+from equation_solver import ISolver
+from equation_solver import Solution
+from equation_solver import Monomial
+from equation_solver import Polynomial as Poly
+from equation_solver import build_polynomial
 
-from linear_eq_solver import LinearSolver
+from equation_solver import LinearSolver
 
 class QuadraticEqSolver(ISolver):
     def __init__(self):

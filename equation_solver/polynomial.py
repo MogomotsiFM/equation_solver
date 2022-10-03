@@ -4,7 +4,7 @@ from itertools import product
 
 from decimal import Decimal
 
-from linear_eq_solver import Monomial
+from equation_solver import Monomial
 
 class Polynomial(Monomial):
     '''

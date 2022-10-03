@@ -1,5 +1,5 @@
-from linear_eq_solver import linear_solver
-from linear_eq_solver import quadratic_eq_solver
+from equation_solver import linear_solver
+from equation_solver import quadratic_eq_solver
 
 def solver_factory(order):
     """

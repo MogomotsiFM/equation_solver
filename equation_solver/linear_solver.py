@@ -1,9 +1,9 @@
 import math
 
-from linear_eq_solver import ISolver
+from equation_solver import ISolver
 
-from linear_eq_solver import Polynomial
-from linear_eq_solver import Solution
+from equation_solver import Polynomial
+from equation_solver import Solution
 
 class LinearSolver(ISolver):
     """

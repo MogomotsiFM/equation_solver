@@ -1,4 +1,4 @@
-from linear_eq_solver import Polynomial
+from equation_solver import Polynomial
 
 class Solution:
     def __init__(self, lhs: Polynomial, rhs: Polynomial):

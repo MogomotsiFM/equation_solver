@@ -1,7 +1,7 @@
 import functools
 
-from linear_eq_solver.monomial import Monomial
-from linear_eq_solver.polynomial import Polynomial
+from equation_solver.monomial import Monomial
+from equation_solver.polynomial import Polynomial
 
 """Simplifies an expression by distributing and then collecting like terms"""
 

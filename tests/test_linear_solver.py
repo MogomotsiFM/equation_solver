@@ -1,10 +1,10 @@
 import pytest
 
-from linear_eq_solver import Solution
-from linear_eq_solver import Monomial
-from linear_eq_solver import Polynomial
-from linear_eq_solver import LinearSolver
-from linear_eq_solver.polynomial import build_polynomial
+from equation_solver import Solution
+from equation_solver import Monomial
+from equation_solver import Polynomial
+from equation_solver import LinearSolver
+from equation_solver.polynomial import build_polynomial
 
 def test_linear_solver_simple_case():
     # 7x - 2 = 19

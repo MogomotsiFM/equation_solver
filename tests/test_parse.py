@@ -1,8 +1,8 @@
 import pytest
 
-from linear_eq_solver import parse
-from linear_eq_solver import Monomial
-from linear_eq_solver.polynomial import build_polynomial
+from equation_solver import parse
+from equation_solver import Monomial
+from equation_solver.polynomial import build_polynomial
 
 def test_parser_no_simplification_required():
     # 2x - 1
