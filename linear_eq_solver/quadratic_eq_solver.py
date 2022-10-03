@@ -73,11 +73,11 @@ class QuadraticEqSolver(ISolver):
         steps.append(f"x = 0    OR   {poly} = 0")
 
         steps.append("\nSolve the linear problem")
-        sol_list, substeps = LinearSolver().solve(poly, Poly(Monomial(0, 0)))
+        sol_list, substeps = LinearSolver().solve(poly, Poly(0))
         steps.extend(substeps)
 
         # This is the solution we get from factoring out x: x = 0
-        sol_list.append( Solution(Poly(Monomial(1, 1)), Poly(Monomial(0, 0))) )
+        sol_list.append( Solution(Poly(Monomial(1, 1)), Poly(0)) )
 
         return sol_list, steps
 
@@ -108,11 +108,11 @@ class QuadraticEqSolver(ISolver):
                 steps.append(f"which implies:  {poly1} = 0    OR    {poly2} = 0")
 
                 steps.append(f"\nSolve: {poly1} = 0")
-                sol_list1, substeps = LinearSolver().solve(poly1, Poly(Monomial(0, 0)))
+                sol_list1, substeps = LinearSolver().solve(poly1, Poly(0))
                 steps.extend(substeps)
 
                 steps.append(f"\nSolve: {poly2} = 0")
-                sol_list2, substeps = LinearSolver().solve(poly2, Poly(Monomial(0, 0)))
+                sol_list2, substeps = LinearSolver().solve(poly2, Poly(0))
                 steps.extend(substeps)
 
                 sol_list1.extend(sol_list2)
@@ -161,11 +161,11 @@ class QuadraticEqSolver(ISolver):
             steps.append(f"{poly_lhs} = {sqrt}    OR    {poly_lhs} = - {sqrt}")
 
             steps.append(f"\nSolve: {poly_lhs} = {sqrt}")
-            sol_list1, substeps = LinearSolver().solve(poly_lhs, Poly(Monomial(sqrt, 0)))
+            sol_list1, substeps = LinearSolver().solve(poly_lhs, Poly(sqrt))
             steps.extend(substeps)
 
             steps.append(f"\nSolve: {poly_lhs} = {sqrt}")
-            sol_list2, substeps = LinearSolver().solve(poly_lhs, Poly(Monomial(-1*sqrt, 0)))
+            sol_list2, substeps = LinearSolver().solve(poly_lhs, Poly(-1*sqrt))
             steps.extend(substeps)
 
             sol_list1.extend(sol_list2)

@@ -20,6 +20,8 @@ class Polynomial(Monomial):
             self.expression = copy.deepcopy(other.expression)
         elif isinstance(other, Monomial):
             self.expression[other.exponent] = copy.copy(other)
+        elif isinstance(other, (int, float, Decimal)):
+            self.expression[0] = Monomial(other, 0)
         else:
             raise Exception("A polynomial may only be constructed from a monomial or another polynomial .")
 

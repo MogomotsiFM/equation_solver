@@ -21,7 +21,7 @@ def parse_(text, pos, m):
 
         if c.isdigit():
             mono = Monomial(int(c), 0)
-            operands.append( Polynomial(mono).mult(m) )
+            operands.append( Polynomial(int(c)).mult(m) )
         elif 'x' in c:
             mono = retrieve_coefficient(c)
             operands.append( Polynomial(mono).mult(m) )

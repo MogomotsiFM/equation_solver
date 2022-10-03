@@ -11,6 +11,11 @@ def test_polynomial_set_correctly():
 
     assert str(p) == '3x^2'
 
+def test_polynomial_constant():
+    m = Polynomial(10)
+
+    assert str(m) == '10'
+
 def test_polynomial_addition_success():
     # "3x^2 + 5x^8"
     m = build_polynomial(Monomial(3, 2), Monomial(5, 8))
