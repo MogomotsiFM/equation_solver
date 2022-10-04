@@ -28,8 +28,8 @@ class Polynomial(Monomial):
     def add(self, other):
         if isinstance(other, Polynomial):
             tmp = Polynomial(self)
-            for exponent, term in other.expression.items():
-                tmp.expression[exponent] = tmp.get_monomial(exponent).add(term)
+            for term in other.expression.values():
+                tmp.expression[term.exponent] = tmp.get_monomial(term.exponent).add(term)
             return tmp.simplify()
         elif isinstance(other, Monomial):
             tmp = Polynomial(self)
@@ -40,8 +40,8 @@ class Polynomial(Monomial):
     def subt(self, other):
         if isinstance(other, Polynomial):
             tmp = Polynomial(self)
-            for exponent, term in other.expression.items():
-                tmp.expression[exponent] = tmp.get_monomial(exponent).subt(term)
+            for term in other.expression.values():
+                tmp.expression[term.exponent] = tmp.get_monomial(term.exponent).subt(term)
             return tmp.simplify()
         elif isinstance(other, Monomial):
             tmp = Polynomial(self)
@@ -68,7 +68,9 @@ class Polynomial(Monomial):
                 t = term.div(other)
                 tmp.expression[t.exponent] = t
             return tmp.simplify()
-        raise Exception("A poly may be divided with a number or Monomial.")
+        elif isinstance(other, Polynomial) and other.order() == 1:
+            return self.long_division(other)
+        raise Exception("A poly may be divided with a number, Monomial or linear Polynomial.")
 
     def __eq__(self, other):
         if isinstance(other, Polynomial):
@@ -126,6 +128,45 @@ class Polynomial(Monomial):
             order = self.order()
 
         return self
+
+    def long_division(self, linear):
+        # Assert the linear expression is a factor
+        if not self.is_factor(linear):
+            raise Exception("We may only divide by a factor of a Polynomial")
+
+        return_poly = Polynomial(0)
+
+        divident = Polynomial(self)
+        divisor = linear
+        order = divident.order()
+        quotient = divident.get_monomial(order).div(divisor.get_monomial(1))
+        
+        return_poly = return_poly.add(quotient)
+        
+        poly = divisor.mult(quotient)
+        rem = divident.add(poly.mult(-1))
+        while rem != Polynomial(0):
+            divident = rem
+            order = divident.order()
+            quotient = divident.get_monomial(order).div(divisor.get_monomial(1))
+        
+            return_poly = return_poly.add(quotient)
+        
+            poly = divisor.mult(quotient)
+            rem = divident.add(poly.mult(-1))
+        
+        return return_poly
+
+    def is_factor(self, linear):
+        const = linear.get_monomial(0).coeff
+
+        return self.evaluate(-1 * const) == 0
+
+    def evaluate(self, const):
+        if (isinstance(const, (int, float, Decimal))):
+            return sum([n.evaluate(const) for n in self.expression.values()])
+            
+        raise Exception("A polynomial may only be evaluated given a constant.")
 
 def build_polynomial(*args):
     """

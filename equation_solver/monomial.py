@@ -46,6 +46,12 @@ class Monomial:
 
         raise Exception("Monomials may be divided by a scalar or another Monomial.")
 
+    def evaluate(self, const):
+        if (not isinstance(const, (int, float, Decimal))):
+            raise Exception("A polynomial may only be evaluated given a constant.")
+        
+        return self.coeff * Decimal(math.pow(const, self.exponent))
+
     def __str__(self):
         str_ = "0"
         if self.coeff:

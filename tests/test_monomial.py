@@ -102,3 +102,17 @@ def test_monomial_equality_agains_scalar_fails():
     m = Monomial(3, 0)
 
     assert not m == 3
+
+def test_monomial_evaluate_constant():
+    m = Monomial(3, 5)
+
+    val = m.evaluate(2)
+
+    assert val == 96
+
+def test_monomial_evaluate_zero():
+    m = Monomial(5, 0)
+
+    val = m.evaluate(10)
+
+    assert val == 5

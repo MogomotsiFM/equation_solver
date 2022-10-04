@@ -1,5 +1,7 @@
 import pytest
 
+from decimal import Decimal
+
 from equation_solver import Polynomial
 from equation_solver import Monomial
 from equation_solver import build_polynomial
@@ -133,3 +135,60 @@ def test_equality_symmetric():
 
     assert m != n
     assert n != m
+
+def test_polynomial_evaluate_at_constant():
+    # 4x^4 - 3x^2 + 2x - 5
+    m = build_polynomial(Monomial(4, 4), Monomial(-3, 2), Monomial(2, 1), Monomial(-5, 0))
+
+    val = m.evaluate(-4)
+
+    assert val == Decimal(963)
+
+def test_polynomial_evaluate_at_zero():
+    # 4x^4 - 3x^2 + 2x - 5
+    m = build_polynomial(Monomial(4, 4), Monomial(-3, 2), Monomial(2, 1), Monomial(-5, 0))
+
+    val = m.evaluate(0)
+
+    assert val == Decimal(-5)
+
+def test_polynomial_is_factor():
+    # divident = x^3 - 1
+    # divisor = x - 1
+
+    divident = build_polynomial(Monomial(1, 3), Monomial(-1, 0))
+    divisor = build_polynomial(Monomial(1, 1), Monomial(-1, 0))
+
+    assert divident.is_factor(divisor) is True
+
+def test_polynomial_is_not_factor():
+    # divident = x^3 - 1
+    # divisor = x + 1
+
+    divident = build_polynomial(Monomial(1, 3), Monomial(-1, 0))
+    divisor = build_polynomial(Monomial(1, 1), Monomial(1, 0))
+
+    assert divident.is_factor(divisor) is False
+
+def test_polynomial_long_division_by_factor():
+    # divident = x^3 - 1
+    # divisor = x - 1
+
+    divident = build_polynomial(Monomial(1, 3), Monomial(-1, 0))
+    divisor = build_polynomial(Monomial(1, 1), Monomial(-1, 0))
+
+    quotient = divident.long_division(divisor)
+
+    assert str(quotient) == 'x^2 + x + 1'
+
+def test_polynomial_long_division_by_non_factor():
+    with pytest.raises(Exception) as exc:
+        # divident = x^3 - 1
+        # divisor = x + 1
+
+        divident = build_polynomial(Monomial(1, 3), Monomial(-1, 0))
+        divisor = build_polynomial(Monomial(1, 1), Monomial(1, 0))
+
+        divident.long_division(divisor)
+
+    assert str(exc.value) == "We may only divide by a factor of a Polynomial"
