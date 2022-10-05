@@ -17,6 +17,8 @@ class LinearSolver(ISolver):
         self.lhs = lhs
         self.rhs = rhs
 
+        print("Linear equation solver")
+
         steps = []
 
         self.assert_linear_problem()
@@ -28,7 +30,7 @@ class LinearSolver(ISolver):
         steps.extend(substeps)
 
         first_order_coeff = self.lhs.get_monomial(1).coeff
-        if math.fabs(first_order_coeff) > 1:
+        if first_order_coeff != 1:
             steps.append(f"\nDevide both sides by {first_order_coeff}:")
             self.lhs = self.lhs.div(first_order_coeff)
             self.rhs = self.rhs.div(first_order_coeff)

@@ -17,6 +17,8 @@ class QuadraticEqSolver(ISolver):
     def solve(self, lhs: Poly, rhs: Poly):
         self.lhs = lhs
         self.rhs = rhs
+
+        print("Quadratic equation solver")
         
         steps = []
 
@@ -41,10 +43,18 @@ class QuadraticEqSolver(ISolver):
     def normalize_equation(self):
         steps = []
 
-        steps.append("\nMove all terms to the left hand side:")
-        self.lhs = self.lhs.subt(self.rhs)
-        self.rhs = self.rhs.subt(self.rhs)
-        steps.append(f"{self.lhs} = {self.rhs}")
+        if not self.rhs == Poly(0):
+            steps.append("\nMove all terms to the left hand side:")
+            self.lhs = self.lhs.subt(self.rhs)
+            self.rhs = self.rhs.subt(self.rhs)
+            steps.append(f"{self.lhs} = {self.rhs}")
+
+        x2_coeff = self.lhs.get_monomial(2).coeff
+        if x2_coeff != 1 and x2_coeff != 0:
+            steps.append(f"\nDevide by the coefficient of x^2: {x2_coeff}")
+            self.lhs = self.lhs.mult(1/x2_coeff)
+            self.rhs = self.rhs.mult(1/x2_coeff)
+            steps.append(f"{self.lhs} = {self.rhs}")
 
         return steps
 
@@ -94,14 +104,14 @@ class QuadraticEqSolver(ISolver):
 
         steps.append("\nTest all the permutations until we find the one that solve the problem")
         for x, c in itertools.product(x_factors, c_factors):
-            poly1 = build_polynomial(Monomial(x[0], 1), Monomial(c[0], 0))
-            poly2 = build_polynomial(Monomial(x[1], 1), Monomial(c[1], 0))
+            poly1 = build_polynomial(Monomial(x[0], 1), Monomial(-1*c[0], 0))
+            poly2 = build_polynomial(Monomial(x[1], 1), Monomial(-1*c[1], 0))
             sol_poly = poly1.mult(poly2)
                 
             steps.append(f"    x factors = {x}, constant factors = {c}, sol = {sol_poly}")
             
             if sol_poly == self.lhs:
-                steps.append("\nFound the combination that solves our problem:")
+                steps.append("\nFound the permutation that solves our problem:")
                     
                 steps.append("\nFactorize:")
                 steps.append(f"({poly1})({poly2}) = 0")
@@ -120,17 +130,14 @@ class QuadraticEqSolver(ISolver):
                 return sol_list1, steps
 
         # Maybe the solutions are not whole numbers
-        return self.completing_the_square()
+        steps.append("\nCould not find factors\n")
+        sols, substeps = self.completing_the_square()
+        steps.extend(substeps)
+        return sols, steps
+
 
     def completing_the_square(self):
         steps = []
-
-        x2_coeff = self.lhs.get_monomial(2).coeff
-        if x2_coeff != 1:
-            steps.append(f"\nDevide by the coefficient of x^2: {x2_coeff}")
-            self.lhs.mult(1/x2_coeff)
-            self.rhs.mult(1/x2_coeff)
-            steps.append(f"{self.lhs} = {self.rhs}")
 
         steps.append("\nMove the constant to the LHS:")
         const  = self.lhs.get_monomial(0)

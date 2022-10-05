@@ -14,9 +14,9 @@ def solve(q: str):
     """
 
     steps = []
-    steps.append(q)
 
     lhs, rhs = preprocess(q)
+    steps.append(f"{' '.join(lhs)} = {' '.join(rhs)}")
 
     lhs, rhs, substeps = simplify_expressions(lhs, rhs)
     steps.extend(substeps)

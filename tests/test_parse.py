@@ -2,7 +2,7 @@ import pytest
 
 from equation_solver import parse
 from equation_solver import Monomial
-from equation_solver.polynomial import build_polynomial
+from equation_solver.polynomial_builder import build_polynomial
 
 def test_parser_no_simplification_required():
     # 2x - 1

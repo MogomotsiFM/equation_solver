@@ -21,4 +21,4 @@ def test_solver_factory_solver_not_defined():
     with pytest.raises(Exception) as exc:
         solver_factory(4)
 
-    assert str(exc.value) == "Trying to solve order 3 or more problem, good luck with that."
+    assert str(exc.value) == "Trying to solve order 4 or more problem, good luck with that."

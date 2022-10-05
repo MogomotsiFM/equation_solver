@@ -4,7 +4,7 @@ from equation_solver import Solution
 from equation_solver import Monomial
 from equation_solver import Polynomial
 from equation_solver import LinearSolver
-from equation_solver.polynomial import build_polynomial
+from equation_solver.polynomial_builder import build_polynomial
 
 def test_linear_solver_simple_case():
     # 7x - 2 = 19

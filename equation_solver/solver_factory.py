@@ -1,7 +1,9 @@
-from equation_solver import linear_solver
-from equation_solver import quadratic_eq_solver
+from equation_solver import ISolver
+from equation_solver import LinearSolver
+from equation_solver import QuadraticEqSolver
+from equation_solver import CubicEqSolver
 
-def solver_factory(order):
+def solver_factory(order) -> ISolver:
     """
     Keep a map of solvers.
     Key: order of the equation,
@@ -9,15 +11,16 @@ def solver_factory(order):
     """
 
     solvers = {
-            0: linear_solver.LinearSolver(),
-            1: linear_solver.LinearSolver(),
-            2: quadratic_eq_solver.QuadraticEqSolver()
+            0: LinearSolver(),
+            1: LinearSolver(),
+            2: QuadraticEqSolver(),
+            3: CubicEqSolver()
         }
 
     solver = solvers.get(order)
 
     if solver is None:
-        raise Exception("Trying to solve order 3 or more problem, good luck with that.")
+        raise Exception("Trying to solve order 4 or more problem, good luck with that.")
 
     return solver
 

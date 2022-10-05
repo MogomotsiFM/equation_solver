@@ -1,6 +1,7 @@
 import copy
-from functools import reduce
+
 from itertools import product
+from functools import reduce
 
 from decimal import Decimal
 
@@ -52,7 +53,12 @@ class Polynomial(Monomial):
     def mult(self, other):
         if isinstance(other, Polynomial):
             monos = [ ts[0].mult(ts[1]) for ts in product(self.expression.values(), other.expression.values()) ]
+            # This is a builder and has been moved to its own file.
+            # Does python support forward definitions so that we can use a type before it is defined.
+            # That would allow the use of this function here before Polynomial is fully defined.
             poly = build_polynomial( *monos )
+            #poly = Polynomial(0)
+            #poly.expression = {item.exponent:poly.get_monomial(item.exponent).add(item) for item in monos}
             return poly.simplify()
         elif isinstance(other, (int, float, Decimal, Monomial)):
             tmp = Polynomial(self)
@@ -62,14 +68,15 @@ class Polynomial(Monomial):
         raise Exception("A poly may be multiplied with a number or Monomial.")
 
     def div(self, other):
-        if isinstance(other, (int, float, Decimal, Monomial)):
+        if isinstance(other, Polynomial) and other.order() == 1:
+            return self.long_division(other)
+        elif isinstance(other, (int, float, Decimal, Monomial)):
             tmp = Polynomial(Monomial(0, 0))
             for term in self.expression.values():
                 t = term.div(other)
                 tmp.expression[t.exponent] = t
             return tmp.simplify()
-        elif isinstance(other, Polynomial) and other.order() == 1:
-            return self.long_division(other)
+        
         raise Exception("A poly may be divided with a number, Monomial or linear Polynomial.")
 
     def __eq__(self, other):
@@ -145,6 +152,7 @@ class Polynomial(Monomial):
         
         poly = divisor.mult(quotient)
         rem = divident.add(poly.mult(-1))
+
         while rem != Polynomial(0):
             divident = rem
             order = divident.order()

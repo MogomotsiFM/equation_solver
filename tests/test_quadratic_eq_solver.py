@@ -3,7 +3,7 @@ import pytest
 from equation_solver import Solution, quadratic_eq_solver
 from equation_solver import Monomial as Mono
 from equation_solver import Polynomial as Poly
-from equation_solver.polynomial import build_polynomial
+from equation_solver.polynomial_builder import build_polynomial
 
 def test_2nd_solver_simple():
     # x^2 - 2x + 1 = 0
@@ -14,6 +14,7 @@ def test_2nd_solver_simple():
 
     target = [Solution(Poly(Mono(1, 1)), Poly(Mono(1, 0))), Solution(Poly(Mono(1, 1)), Poly(Mono(1, 0)))]
 
+    print(sol)
     assert helper(sol) ^ helper(target) == set()
 
 def test_2nd_solve_degenerate_case():
