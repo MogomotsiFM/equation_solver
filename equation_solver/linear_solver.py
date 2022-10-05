@@ -30,7 +30,7 @@ class LinearSolver(ISolver):
         steps.extend(substeps)
 
         first_order_coeff = self.lhs.get_monomial(1).coeff
-        if first_order_coeff != 1:
+        if first_order_coeff != 1 and first_order_coeff != 0:
             steps.append(f"\nDevide both sides by {first_order_coeff}:")
             self.lhs = self.lhs.div(first_order_coeff)
             self.rhs = self.rhs.div(first_order_coeff)
