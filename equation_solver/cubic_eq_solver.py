@@ -25,17 +25,21 @@ class CubicEqSolver(ISolver):
 
         self.assert_third_order_equation()
 
+        steps.append("\nSolve the problem using the factor theorem and long division:")
         factor, quotient, substeps = self.find_factor()
         steps.extend(substeps)
 
         if factor == Poly(0):
             return [], steps
 
-        steps.append(f"Solving: {factor} = 0")
+        steps.append(f'({factor})({quotient}) = 0')
+        steps.append(f"Which implies: {factor} = 0    OR    {quotient} = 0")
+
+        steps.append(f"\nSolving: {factor} = 0")
         sols1, substeps = LinearSolver().solve(factor, Poly(0))
         steps.extend(substeps)
 
-        steps.append(f"Solving: {quotient} = 0")
+        steps.append(f"\nSolving: {quotient} = 0")
         sols2, substeps = QuadraticEqSolver().solve(quotient, Poly(0))
         steps.extend(substeps)
 
@@ -50,6 +54,12 @@ class CubicEqSolver(ISolver):
             steps.append("\nMove all terms to the left hand side:")
             self.lhs = self.lhs.subt(self.rhs)
             self.rhs = self.rhs.subt(self.rhs)
+            steps.append(f"{self.lhs} = {self.rhs}")
+
+        term = self.lhs.get_monomial(3)
+        if term.coeff != 1 and term.coeff != 0:
+            steps.append(f"Divide both sides by the coeffecient of {term.div(term.coeff)}")
+            self.lhs = self.lhs.div(term.coeff)
             steps.append(f"{self.lhs} = {self.rhs}")
 
         return steps

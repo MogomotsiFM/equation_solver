@@ -130,7 +130,7 @@ class QuadraticEqSolver(ISolver):
                 return sol_list1, steps
 
         # Maybe the solutions are not whole numbers
-        steps.append("\nCould not find factors\n")
+        steps.append("\nCould not find factors find that solve the problem\n")
         sols, substeps = self.completing_the_square()
         steps.extend(substeps)
         return sols, steps
