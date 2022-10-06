@@ -28,8 +28,8 @@ class IHigherOrderSolver(ISolver):
         coeff = self.lhs.get_monomial(order).coeff
         if coeff != 1 and coeff != 0:
             steps.append(f"\nDevide by the coefficient of x^2: {coeff}")
-            self.lhs = self.lhs.mult(1/coeff)
-            self.rhs = self.rhs.mult(1/coeff)
+            self.lhs = self.lhs.div(coeff)
+            self.rhs = self.rhs.div(coeff)
             steps.append(f"{self.lhs} = {self.rhs}")
 
         return steps
