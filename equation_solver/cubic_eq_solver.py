@@ -1,13 +1,13 @@
 import itertools
 
-from equation_solver import ISolver
+from equation_solver import IHigherOrderSolver
 from equation_solver import Monomial
 from equation_solver import Polynomial as Poly
 from equation_solver import build_polynomial
 from equation_solver import LinearSolver
 from equation_solver import QuadraticEqSolver
 
-class CubicEqSolver(ISolver):
+class CubicEqSolver(IHigherOrderSolver):
     def __init__(self):
         self.rhs = None
         self.lhs = None
@@ -47,23 +47,6 @@ class CubicEqSolver(ISolver):
 
         return sols2, steps
 
-    def normalize(self):
-        steps = []
-
-        if not self.rhs == Poly(0):
-            steps.append("\nMove all terms to the left hand side:")
-            self.lhs = self.lhs.subt(self.rhs)
-            self.rhs = self.rhs.subt(self.rhs)
-            steps.append(f"{self.lhs} = {self.rhs}")
-
-        term = self.lhs.get_monomial(3)
-        if term.coeff != 1 and term.coeff != 0:
-            steps.append(f"Divide both sides by the coeffecient of {term.div(term.coeff)}")
-            self.lhs = self.lhs.div(term.coeff)
-            steps.append(f"{self.lhs} = {self.rhs}")
-
-        return steps
-
     def assert_third_order_equation(self):
         if max(self.lhs.order(), self.rhs.order()) != 3:
             raise Exception("Attempting to use a cubic solver for a non-cubic problem.")
@@ -82,6 +65,8 @@ class CubicEqSolver(ISolver):
 
             try:
                 quotient = self.lhs.div(fact)
+                
+                assert self.lhs.evaluate(f) == 0
                 steps.append(f"Found a factor: {fact}")
                 
                 return fact, quotient, steps

@@ -4,6 +4,7 @@ from equation_solver.polynomial_builder import build_polynomial
 from equation_solver.parse import parse
 from equation_solver.preprocess import preprocess
 from equation_solver.isolver import ISolver
+from equation_solver.ihigher_order_solver import IHigherOrderSolver
 from equation_solver.solution import Solution
 from equation_solver.linear_solver import LinearSolver
 from equation_solver.quadratic_eq_solver import QuadraticEqSolver

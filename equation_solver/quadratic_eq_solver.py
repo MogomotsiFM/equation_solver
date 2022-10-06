@@ -1,7 +1,7 @@
 import math
 import itertools
 
-from equation_solver import ISolver
+from equation_solver import IHigherOrderSolver
 from equation_solver import Solution
 from equation_solver import Monomial
 from equation_solver import Polynomial as Poly
@@ -9,7 +9,7 @@ from equation_solver import build_polynomial
 
 from equation_solver import LinearSolver
 
-class QuadraticEqSolver(ISolver):
+class QuadraticEqSolver(IHigherOrderSolver):
     def __init__(self):
         self.rhs = None
         self.lhs = None
@@ -19,10 +19,10 @@ class QuadraticEqSolver(ISolver):
         self.rhs = rhs
 
         print("Quadratic equation solver")
-        
+
         steps = []
 
-        substeps = self.normalize_equation()
+        substeps = self.normalize()
         steps.extend(substeps)    
 
         self.assert_second_order_equation()
@@ -39,29 +39,10 @@ class QuadraticEqSolver(ISolver):
 
             return sol_list, steps
 
-
-    def normalize_equation(self):
-        steps = []
-
-        if not self.rhs == Poly(0):
-            steps.append("\nMove all terms to the left hand side:")
-            self.lhs = self.lhs.subt(self.rhs)
-            self.rhs = self.rhs.subt(self.rhs)
-            steps.append(f"{self.lhs} = {self.rhs}")
-
-        x2_coeff = self.lhs.get_monomial(2).coeff
-        if x2_coeff != 1 and x2_coeff != 0:
-            steps.append(f"\nDevide by the coefficient of x^2: {x2_coeff}")
-            self.lhs = self.lhs.mult(1/x2_coeff)
-            self.rhs = self.rhs.mult(1/x2_coeff)
-            steps.append(f"{self.lhs} = {self.rhs}")
-
-        return steps
-
     def assert_second_order_equation(self):
         if self.lhs.order() > 2:
             raise Exception("Trying to use a second order solver for a higher order problem")
-        
+
         if self.lhs.get_monomial(2).coeff == 0:
             raise Exception("Attempting to solve a linear equation with a second order solver")
 
@@ -107,12 +88,12 @@ class QuadraticEqSolver(ISolver):
             poly1 = build_polynomial(Monomial(x[0], 1), Monomial(-1*c[0], 0))
             poly2 = build_polynomial(Monomial(x[1], 1), Monomial(-1*c[1], 0))
             sol_poly = poly1.mult(poly2)
-                
+
             steps.append(f"    x factors = {x}, constant factors = {c}, sol = {sol_poly}")
-            
+
             if sol_poly == self.lhs:
                 steps.append("\nFound the permutation that solves our problem:")
-                    
+
                 steps.append("\nFactorize:")
                 steps.append(f"({poly1})({poly2}) = 0")
                 steps.append(f"which implies:  {poly1} = 0    OR    {poly2} = 0")
@@ -126,7 +107,7 @@ class QuadraticEqSolver(ISolver):
                 steps.extend(substeps)
 
                 sol_list1.extend(sol_list2)
-                    
+
                 return sol_list1, steps
 
         # Maybe the solutions are not whole numbers
@@ -139,7 +120,7 @@ class QuadraticEqSolver(ISolver):
     def completing_the_square(self):
         steps = []
 
-        steps.append("\nMove the constant to the LHS:")
+        steps.append("\nMove the constant to the RHS:")
         const  = self.lhs.get_monomial(0)
         self.lhs = self.lhs.subt(const)
         self.rhs = self.rhs.subt(const)
@@ -147,22 +128,23 @@ class QuadraticEqSolver(ISolver):
 
         x_coeff = self.lhs.get_monomial(1).coeff
         steps.append(f"\nSquare  half the coefficient of x and add to both sides: ({x_coeff/2})^2")
-        steps.append(f"{self.lhs} + ({x_coeff}/2)^2 = {self.rhs} + ({x_coeff}/2)^2")
-        
         sq_term = Monomial(x_coeff * x_coeff/4, 0)
         self.lhs = self.lhs.add(sq_term)
         self.rhs = self.rhs.add(sq_term)
+        steps.append(f"{self.lhs} + ({x_coeff}/2)^2 = {self.rhs} + ({x_coeff}/2)^2")
 
         poly_lhs = build_polynomial(Monomial(1, 1), Monomial(x_coeff/2, 0))
         poly_rhs = self.rhs
 
         steps.append("\nFactorize the RHS")
         steps.append(f"({poly_lhs})({poly_lhs}) = {poly_rhs}")
+        assert poly_lhs.mult(poly_lhs) == self.lhs
 
         steps.append("\nSimplify")
-        steps.append(f"({poly_lhs})^2 = {poly_rhs}")      
-        
-        if self.rhs.get_monomial(0).coeff > 0:
+        steps.append(f"({poly_lhs})^2 = {poly_rhs}") 
+
+        coeff = self.rhs.get_monomial(0).coeff
+        if coeff > 0:
             sqrt = math.sqrt(self.rhs.get_monomial(0).coeff)
             steps.append("\nTake the square root of both sides")
             steps.append(f"{poly_lhs} = {sqrt}    OR    {poly_lhs} = - {sqrt}")
@@ -176,10 +158,10 @@ class QuadraticEqSolver(ISolver):
             steps.extend(substeps)
 
             sol_list1.extend(sol_list2)
-                    
+
             return sol_list1, steps
         else:
-            steps.append("\nSolution does not exist")
+            steps.append(f"\nSolution does not exist: Cannot compute sqrt({coeff})")
 
         return [], steps
 
