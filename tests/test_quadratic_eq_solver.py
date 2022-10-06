@@ -48,7 +48,8 @@ def test_2nd_solution_does_not_exist():
 
     sol, _ = quadratic_eq_solver.QuadraticEqSolver().solve(lhs, rhs)
 
-    assert sol == []
+    assert sol[0].lhs == lhs
+    assert sol[0].rhs == rhs
 
 def test_2nd_rejects_problems_of_order_3_and_higher():
     with pytest.raises(Exception) as exc:

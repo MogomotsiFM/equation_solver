@@ -120,6 +120,8 @@ class QuadraticEqSolver(IHigherOrderSolver):
     def completing_the_square(self):
         steps = []
 
+        steps.append("\nTrying completing the square")
+
         const  = self.lhs.get_monomial(0)
         if const != 0:
             steps.append("\nMove the constant to the RHS:")
@@ -161,8 +163,6 @@ class QuadraticEqSolver(IHigherOrderSolver):
             sol_list1.extend(sol_list2)
 
             return sol_list1, steps
-        else:
-            steps.append(f"\nSolution does not exist: Cannot compute sqrt({coeff})")
 
-        return [], steps
-
+        steps.append(f"\nSolution does not exist: Cannot compute sqrt({coeff})")
+        return [Solution(self.lhs.subt(self.rhs), Poly(0))], steps

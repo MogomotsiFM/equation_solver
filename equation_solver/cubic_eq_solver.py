@@ -7,6 +7,7 @@ from equation_solver import Polynomial as Poly
 from equation_solver import build_polynomial
 from equation_solver import LinearSolver
 from equation_solver import QuadraticEqSolver
+from equation_solver import Solution
 
 class CubicEqSolver(IHigherOrderSolver):
     def __init__(self):
@@ -46,6 +47,10 @@ class CubicEqSolver(IHigherOrderSolver):
         steps.append(f"\nSolving: {quotient} = 0")
         sols2, substeps = QuadraticEqSolver().solve(quotient, Poly(0))
         steps.extend(substeps)
+        
+        # Solution does not exist
+        if len(sols2) == 0:
+            sols2.append(Solution(quotient, Poly(0)))
 
         sols2.extend(sols1)
 
