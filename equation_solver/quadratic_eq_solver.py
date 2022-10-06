@@ -120,28 +120,29 @@ class QuadraticEqSolver(IHigherOrderSolver):
     def completing_the_square(self):
         steps = []
 
-        steps.append("\nMove the constant to the RHS:")
         const  = self.lhs.get_monomial(0)
-        self.lhs = self.lhs.subt(const)
-        self.rhs = self.rhs.subt(const)
-        steps.append(f"{self.lhs} = {self.rhs}")
+        if const != 0:
+            steps.append("\nMove the constant to the RHS:")
+            self.lhs = self.lhs.subt(const)
+            self.rhs = self.rhs.subt(const)
+            steps.append(f"{self.lhs} = {self.rhs}")
 
         x_coeff = self.lhs.get_monomial(1).coeff
-        steps.append(f"\nSquare  half the coefficient of x and add to both sides: ({x_coeff/2})^2")
-        sq_term = Monomial(x_coeff * x_coeff/4, 0)
-        self.lhs = self.lhs.add(sq_term)
-        self.rhs = self.rhs.add(sq_term)
-        steps.append(f"{self.lhs} + ({x_coeff}/2)^2 = {self.rhs} + ({x_coeff}/2)^2")
-
         poly_lhs = build_polynomial(Monomial(1, 1), Monomial(x_coeff/2, 0))
-        poly_rhs = self.rhs
+        if x_coeff != 0:
+            steps.append(f"\nSquare  half the coefficient of x and add to both sides: ({x_coeff/2})^2")
+            sq_term = Monomial(x_coeff * x_coeff/4, 0)
+            self.lhs = self.lhs.add(sq_term)
+            self.rhs = self.rhs.add(sq_term)
+            steps.append(f"{self.lhs} + ({x_coeff}/2)^2 = {self.rhs} + ({x_coeff}/2)^2")
 
-        steps.append("\nFactorize the RHS")
-        steps.append(f"({poly_lhs})({poly_lhs}) = {poly_rhs}")
-        assert poly_lhs.mult(poly_lhs) == self.lhs
+            poly_rhs = self.rhs
 
-        steps.append("\nSimplify")
-        steps.append(f"({poly_lhs})^2 = {poly_rhs}") 
+            steps.append("\nFactorize the RHS")
+            steps.append(f"({poly_lhs})({poly_lhs}) = {poly_rhs}")
+
+            steps.append("\nSimplify")
+            steps.append(f"({poly_lhs})^2 = {poly_rhs}")
 
         coeff = self.rhs.get_monomial(0).coeff
         if coeff > 0:

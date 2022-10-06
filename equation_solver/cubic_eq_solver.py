@@ -1,4 +1,5 @@
 import itertools
+import math
 
 from equation_solver import IHigherOrderSolver
 from equation_solver import Monomial
@@ -26,14 +27,17 @@ class CubicEqSolver(IHigherOrderSolver):
         self.assert_third_order_equation()
 
         steps.append("\nSolve the problem using the factor theorem and long division:")
-        factor, quotient, substeps = self.find_factor()
+        factor, substeps = self.find_factor()
         steps.extend(substeps)
 
         if factor == Poly(0):
             return [], steps
 
-        steps.append(f'({factor})({quotient}) = 0')
-        steps.append(f"Which implies: {factor} = 0    OR    {quotient} = 0")
+        quotient = self.lhs.div(factor)
+        steps.append(f"\nLong division: ({self.lhs}) / ({factor}) = {quotient}")
+        steps.append(f"Which means that: {self.lhs} = ({factor})({quotient})")
+        steps.append(f'Therefore: ({factor})({quotient}) = 0')
+        steps.append(f"Which means: {factor} = 0    OR    {quotient} = 0")
 
         steps.append(f"\nSolving: {factor} = 0")
         sols1, substeps = LinearSolver().solve(factor, Poly(0))
@@ -51,32 +55,27 @@ class CubicEqSolver(IHigherOrderSolver):
         if max(self.lhs.order(), self.rhs.order()) != 3:
             raise Exception("Attempting to use a cubic solver for a non-cubic problem.")
 
+    def factor(self):
+        '''
+        All candidate factor
+        Try this infinite sequence for factors: 0, 1, -1, 2, -2, ...
+        '''
+        for pair in zip(itertools.count(0, 1), itertools.count(-1, -1)):
+            for item in pair:
+                yield item
+    
     def find_factor(self):
         steps = []
 
-        # All candidate factor
-        # Try this infinite sequence for factors: 0, 1, -1, 2, -2, ...
-        # factors = [item for p in zip(itertools.count(0, 1), itertools.count(-1, -1)) for item in p]
-        factors = [item for p in zip(range(0, 10), range(-1, -10, -1)) for item in p]
-
-        for f in factors:
+        for f in itertools.takewhile(lambda f: math.fabs(f) < 50, self.factor()):
             fact = build_polynomial(Monomial(1, 1), Monomial(-1*f, 0))
             steps.append(f"Trying a factor: {fact}")
 
-            try:
-                quotient = self.lhs.div(fact)
-                
-                assert self.lhs.evaluate(f) == 0
-                steps.append(f"Found a factor: {fact}")
-                
-                return fact, quotient, steps
-            except Exception:
-                print("Swallowing this exception because we still have more factors to try.")
-
+            if self.lhs.evaluate(f) == 0:
+                return fact, steps
 
         steps.append("Could not find a factor of the cubic polynomial.")
-        
-        return Poly(0), Poly(0), steps
+        return Poly(0), steps
 
 
 

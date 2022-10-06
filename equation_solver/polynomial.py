@@ -13,7 +13,7 @@ class Polynomial(Monomial):
     The key is the exponent and the value a Monomial
 
     This representation means that we are duplicating exponent data but it
-    allows us to say a Polynomial has a number of Monomials
+    allows us to easily retrieve a Monomial without explicitly searching for it.
     '''
     def __init__(self, other):
         self.expression = {}
@@ -57,8 +57,6 @@ class Polynomial(Monomial):
             # Does python support forward definitions so that we can use a type before it is defined.
             # That would allow the use of this function here before Polynomial is fully defined.
             poly = build_polynomial( *monos )
-            #poly = Polynomial(0)
-            #poly.expression = {item.exponent:poly.get_monomial(item.exponent).add(item) for item in monos}
             return poly.simplify()
         elif isinstance(other, (int, float, Decimal, Monomial)):
             tmp = Polynomial(self)
