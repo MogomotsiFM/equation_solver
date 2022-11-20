@@ -1,132 +1,21 @@
+import parsy
 import functools
+from equation_solver import Monomial
+from equation_solver import Polynomial
 
-from equation_solver.monomial import Monomial
-from equation_solver.polynomial import Polynomial
-
-"""Simplifies an expression by distributing and then collecting like terms"""
-
-def parse_(text, pos, m):
-    start = pos
-
-    ops = list() #List of operations
-    operands = list() #List of operands/expressions
-
-    steps = list()
-    
-    seenOpenningBracket = False
-
-    i = pos
-    while i<len(text):
-        c = text[i]
-
-        if c.isdigit():
-            mono = Monomial(int(c), 0)
-            operands.append( Polynomial(int(c)).mult(m) )
-        elif 'x' in c:
-            mono = retrieve_coefficient(c)
-            operands.append( Polynomial(mono).mult(m) )
-        elif c in "-+":
-            if c == '-' and i == start: #The leading term is negative
-                operands.append(Monomial(0, 0))
-            ops.append(c)
-        elif ')' in c:
-            if len(c) == 1:
-                break
-            else:
-                if c == ')(':
-                    # Hacky: Make sure this term is inspected again since 
-                    # it contains two terms that do not exactly go together
-                    # We have to modify this term because everytime we see a closing 
-                    # break and return to the calling function. This means that without 
-                    # modifying this term we endup terminating prematurely.
-                    text[i] = '#('
-                    i = i - 1
-
-                    break
-                #else:
-                #    raise Exception
-        elif '(' in c:
-            seenOpenningBracket = True
-            
-            if start == 0:
-                steps.append("\nDistribute:")
-            
-            mult = 1
-            if len(c) > 1:
-                if c == '#(':
-                    # The popped value is actually a Polynomial.
-                    mult = operands.pop()
-                else:
-                    mult = int(c[:-1])
-
-            (i, exp, sub_steps) = parse_(text, i+1, mult)
-            
-            # Did we find a matching closing bracket
-            i_hack = i + 1
-            
-            if i>=len(text) or (not ')' in text[i] and i_hack<len(text) and not '#' in text[i_hack]):
-                raise Exception("Could not find matching closing bracket")
-
-            steps.extend(sub_steps)
-            
-            operands.append(exp)
+# terms: A list of lists
+def map_to_monomials(terms):
+    # Convert all terms to Monomials
+    monomials = []
+    for term in terms:
+        if isinstance(term, list):
+            monomials.append(map_to_monomials(term))
+        elif term in '-+':
+            monomials.append(term)
         else:
-            raise Exception("Ill-formatted question")
-        
-        i = i + 1
+            monomials.append(monomial(term))
+    return monomials
 
-
-    # Generate step information
-    # If we have seen the openning bracket then we have distributed terms
-    #  and we must show that step
-    # Also, we want to print the contents of our queues if we are at the root 
-    # of the recursion stack because anywhere else we do not have access to the 
-    # expressions we have seen before nor the ones we have not seen.
-    if seenOpenningBracket and start == 0:
-        sub_steps = generate_step(operands, ops)
-        steps.append(sub_steps)
-
-    simple_expr = reduce_expression(operands, ops)
-
-    if seenOpenningBracket and start == 0:
-        steps.append("\nAdd like terms:")
-    if start == 0:
-        steps.append(str(simple_expr))
-
-    return (i, simple_expr, steps)
-
-def retrieve_coefficient(term):
-    coeff = 1
-    # We got here because we found x in the term
-    exp   = 1
-    if len(term) > 1:
-        idx = term.find('x')
-        if idx > 0:
-            coeff = term[:idx]
-
-        # Find the exponent: ax^b
-        idx = term.find('^')
-        if idx > 0:
-            if (idx+1) < len(term):
-                exp = term[idx+1:]
-            else:
-                raise Exception("Ill-formatted input: Ensure there is a number right after ^")
-    return Monomial(int(coeff), int(exp))
-
-def generate_step(operands: list, operators: list):
-    step = ""
-    # We insert a 0 Expression at the begining if an expression has a leading neg number
-    # So, for printing purposes, ignore it if it was inserted
-    if not operands[0] == Monomial(0, 0):
-        step = str(operands[0])
-
-    for b, op in zip(operands[1:], operators):
-        if op == '-':
-            step = step + ' ' + str(b.mult(-1))
-        else:
-            step = step + " " + op + " " + str(b)
-    
-    return step
 
 def reduce_expression(operands: list, operators: list):
     if not len(operands) - 1 == len(operators):
@@ -140,6 +29,7 @@ def reduce_expression(operands: list, operators: list):
 
     return expr
 
+
 def reduce_one_term(partial, operand_operator_tuple):
     operand, operator = operand_operator_tuple
 
@@ -152,7 +42,93 @@ def reduce_one_term(partial, operand_operator_tuple):
 
     return partial
 
-def parse(text: list):
-    _, exp, steps = parse_(text, 0, 1)
 
-    return exp, steps
+def parse_helper(terms, top_level):
+    operands = []
+    operators = []
+    steps = []
+
+    first_term = True
+    just_seen_operator = False
+    distributed = False
+
+    for term in terms:
+        if isinstance(term, list):
+            coeff = Polynomial(1)
+            if not just_seen_operator and len(operands) > 0:
+                coeff = operands.pop()
+                if isinstance(coeff, Monomial):
+                    coeff = Polynomial(coeff)
+
+            if top_level and not distributed:
+                steps.append('\nDistribute:')
+                distributed = True
+
+            expr, _ = parse_helper(term, False)
+            operands.append( coeff.mult(expr) )
+            just_seen_operator = False
+        elif term in ['-', '+']:
+            just_seen_operator = True
+            operators.append(term)
+            if first_term:
+                operands.append( Monomial(0, 0) )
+        else:
+            just_seen_operator = False
+            operands.append(term)
+
+        first_term = False
+    
+    if distributed:
+        steps.append(generate_step(operands, operators))
+
+    expr = reduce_expression(operands, operators)
+
+    steps.append('\nAdd like terms:')
+    steps.append(str(expr))
+
+    return expr, steps
+
+
+def parse(terms):
+    return parse_helper( map_to_monomials(terms), True )
+
+
+def generate_step(operands: list, operators: list):
+    step = ""
+    # We insert a 0 Expression at the begining if an expression has a leading neg number
+    # So, for printing purposes, ignore it if it was inserted
+    if not operands[0] == Monomial(0, 0):
+        step = str(operands[0])
+
+    for b, op in zip(operands[1:], operators):
+        if op == '-':
+            step = step + ' ' + str(b.mult(-1))
+        else:
+            step = step + " " + op + " " + str(b)
+
+    return step
+
+
+def monomial(term):
+    const_term = parsy.regex('[0-9]+')
+    # ax^n
+    ho_term = parsy.regex('[0-9]*x(\^[0-9]+)?')
+
+    try:
+        t = const_term.parse(term)
+        return Monomial(int(t), 0)
+    except parsy.ParseError:
+        try:
+            t = ho_term.parse(term)
+            coeff = 1
+            idx = t.find('x')
+            if idx > 0:
+                coeff = int(t[:idx])
+            exp = 1
+            idx = t.find('^')
+            if idx > 0:
+                exp = int(t[idx+1:])
+
+            return Monomial(coeff, exp)
+        except parsy.ParseError:
+            raise Exception("Ill-formatted input: Ensure there is a number right after ^")

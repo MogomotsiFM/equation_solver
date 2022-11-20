@@ -9,6 +9,7 @@ from equation_solver.solution import Solution
 from equation_solver.linear_solver import LinearSolver
 from equation_solver.quadratic_eq_solver import QuadraticEqSolver
 from equation_solver.cubic_eq_solver import CubicEqSolver
+from equation_solver.general_eq_solver import GeneralEqSolver
 from equation_solver.solver_factory import solver_factory
 from equation_solver.solver import solve
 

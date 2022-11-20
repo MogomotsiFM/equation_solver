@@ -16,7 +16,7 @@ def solve(q: str):
     steps = []
 
     lhs, rhs = preprocess(q)
-    steps.append(f"{' '.join(lhs)} = {' '.join(rhs)}")
+    steps.append(f"{' '.join( flatten(lhs) )} = {' '.join( flatten(rhs) )}")
 
     lhs, rhs, substeps = simplify_expressions(lhs, rhs)
     steps.extend(substeps)
@@ -36,16 +36,29 @@ def simplify_expressions(lhs_, rhs_):
     steps = []
 
     lhs, lhs_sub_steps = parse(lhs_)
-    if str(lhs) != ' '.join(lhs_):
+    if str(lhs) != ' '.join( flatten(lhs_) ):
         steps.append("\nSimplify LHS:")
-        steps.extend(append_rhs(lhs_sub_steps, " ".join(rhs_)))
-    
+        steps.extend(append_rhs(lhs_sub_steps, " ".join( flatten(rhs_) )))
+
     rhs, rhs_sub_steps = parse(rhs_)
-    if str(rhs) != ' '.join(rhs_):
+    if str(rhs) != ' '.join( flatten(rhs_) ):
         steps.append("\nSimplify RHS:")
         steps.extend(append_lhs(rhs_sub_steps, lhs))
 
     return lhs, rhs, steps
+
+
+def flatten(expr):
+    list_expr = []
+    for term in expr:
+        if isinstance(term, list):
+            list_expr.append('(')
+            list_expr.extend(flatten(term))
+            list_expr.append(')')
+        else:
+            list_expr.append(term)
+    return list_expr
+
 
 def append_lhs(rhs_substeps: list, lhs_expr):
     '''
