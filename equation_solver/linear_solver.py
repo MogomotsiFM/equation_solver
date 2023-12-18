@@ -47,43 +47,36 @@ class LinearSolver(ISolver):
             raise Exception("Trying to solve a higher order equation with a linear solver")
 
     def eliminate_first_order_terms(self):
-        steps = []
+        # steps = []
 
         mono = self.rhs.get_monomial(1)
-        if mono.coeff:
-            if mono.coeff > 0:
-                steps.append(f"\nSubtract {mono} on both sides of the equal sign:")
-                steps.append(f'{self.lhs} - {mono} = - {mono} + {self.rhs}')
-            else:
-                a_pos = mono.mult(-1)
 
-                steps.append(f"\nAdd {a_pos} on both sides of the equal sign:")
-                steps.append(f'{self.lhs} + {a_pos} = {a_pos} {self.rhs}')
-
-            steps.append("\nSimplify both sides:")
-            self.lhs = self.lhs.subt( mono )
-            self.rhs = self.rhs.subt( mono )
-            steps.append(f'{self.lhs} = {self.rhs}')
-
-        return steps
+        return self.collect_like_terms(mono)
 
     def eliminate_zeroth_order_terms(self):
-        steps = []
+        # steps = []
 
         mono = self.lhs.get_monomial(0)
-        if mono.coeff:
-            if mono.coeff > 0:
-                steps.append(f"\nSubtract {mono} on both sides of the equal sign:")
-                steps.append(f'{self.lhs} - {mono} = {self.rhs} - {mono}')
+
+        return self.collect_like_terms(mono)
+        
+
+    def collect_like_terms(self, term):
+        steps = []
+
+        if term.coeff:
+            if term.coeff > 0:
+                steps.append(f"\nSubtract {term} on both sides of the equal sign:")
+                steps.append(f'{self.lhs} - {term} = {self.rhs} - {term}')
             else:
-                b_pos = mono.mult(-1)
+                b_pos = term.mult(-1)
 
                 steps.append(f"\nAdd {b_pos} on both sides of the equal sign:")
                 steps.append(f'{self.lhs} + {b_pos} = {self.rhs} + {b_pos}')
                 
             steps.append("\nSimplify both sides:")
-            self.rhs = self.rhs.subt( mono )
-            self.lhs = self.lhs.subt( mono )
+            self.rhs = self.rhs.subt( term )
+            self.lhs = self.lhs.subt( term )
             steps.append(f'{self.lhs} = {self.rhs}')
 
         return steps

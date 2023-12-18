@@ -17,7 +17,7 @@ Add like terms:
 90x + 54 = 144x - 108
 
 Subtract 144x on both sides of the equal sign:
-90x + 54 - 144x = - 144x + 144x - 108
+90x + 54 - 144x = 144x - 108 - 144x
 
 Simplify both sides:
 - 54x + 54 = - 108
