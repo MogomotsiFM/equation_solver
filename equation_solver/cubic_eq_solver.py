@@ -32,7 +32,7 @@ class CubicEqSolver(IHigherOrderSolver):
         steps.extend(substeps)
 
         if factor == Poly(0):
-            return [], steps
+            return [Solution(self.lhs, self.rhs)], steps
 
         quotient = self.lhs.div(factor)
         steps.append(f"\nLong division: ({self.lhs}) / ({factor}) = {quotient}")

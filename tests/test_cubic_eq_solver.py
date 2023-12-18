@@ -27,6 +27,7 @@ def test_cubic_solver_one_solution_exists():
 
     assert len(sol) == 2
     assert sol[0].lhs == build_polynomial(Mono(1, 2), Mono(1, 1), Mono(1, 0))
+    print("Cubic: ", sol[1])
     assert sol[1] == Solution(build_polynomial(Mono(1, 1)), Polynomial(1))
     
  
