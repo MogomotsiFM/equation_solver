@@ -26,13 +26,14 @@
 
 ### How to use it?
 * Checkout the code to your local machine: `git clone url_to_root_folder`
+* Create a virtual environment: `python -m virtualenv venv`
+* Activate the virtual environment: `venv\Scripts\Activate`
+* Install requirements: `python -m pip install -r requirements.txt`
 * Running tests
-    * Install `pytest`: `python3 -m pip install pytest`
     * Open a terminal and change to the root of the application,
-    * Type `pytest` at the terminal then press ENTER to run the tests,
+    * Type `python -m pytest` at the terminal then press ENTER to run the tests,
 * Answering your own question
     * Open a terminal and change to the test directory for the test app,
     * Enter your question at the terminal: 
-        `python3 test_app.py 2( 4x + 3 ) + 6x = 24 - 4x` 
-    * Ensure that there are spaces around the operators and parenthesis, unless multiplication is implied,
+        `python test_app.py 2( 4x + 3 ) + 6x = 24 - 4x` 
     * Press ENTER and the application should respond with the solution.
