@@ -102,11 +102,12 @@ class QuadraticEqSolver(IHigherOrderSolver):
                 sol_list1, substeps = LinearSolver().solve(poly1, Poly(0))
                 steps.extend(substeps)
 
-                steps.append(f"\nSolve: {poly2} = 0")
-                sol_list2, substeps = LinearSolver().solve(poly2, Poly(0))
-                steps.extend(substeps)
+                if not poly1 == poly2:
+                    steps.append(f"\nSolve: {poly2} = 0")
+                    sol_list2, substeps = LinearSolver().solve(poly2, Poly(0))
+                    steps.extend(substeps)
 
-                sol_list1.extend(sol_list2)
+                    sol_list1.extend(sol_list2)
 
                 return sol_list1, steps
 
