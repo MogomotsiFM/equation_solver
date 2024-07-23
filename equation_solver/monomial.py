@@ -42,6 +42,8 @@ class Monomial:
         if isinstance(other, (int, float, Decimal)):
             return Monomial(self.coeff/other, self.exponent)
         elif isinstance(other, Monomial):
+            if self.exponent < other.exponent:
+                raise Exception("The exponent of the numerator should be greater than that of the denominator.")
             return Monomial(self.coeff/other.coeff, self.exponent-other.exponent)
 
         raise Exception("Monomials may be divided by a scalar or another Monomial.")
