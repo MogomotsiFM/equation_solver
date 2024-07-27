@@ -1,0 +1,78 @@
+[
+    {
+        "description": "fairly_simple_problem",
+        "equation": "7x - 2 = 19",            
+        "solution": [
+            "7x - 2 = 19", 
+            "\nAdd 2 on both sides of the equal sign:", 
+            "7x - 2 + 2 = 19 + 2", 
+            "\nSimplify both sides:", 
+            "7x = 21",
+            "\nDevide both sides by 7:", 
+            "x = 3", 
+            "\nSolution:", 
+            "x = 3"]
+    },
+    {
+        "description": "no_so_simple_problem",
+        "equation": "21( 4x + 3 ) + 6x - 9 = - 12( - 12x + 10 ) + 12",
+        "solution": [
+            "21 ( 4x + 3 ) + 6x - 9 = - 12 ( - 12x + 10 ) + 12", 
+            "\nSimplify LHS:", 
+            "\nDistribute:", 
+            "84x + 63 + 6x - 9 = - 12 ( - 12x + 10 ) + 12", 
+            "\nAdd like terms:", 
+            "90x + 54 = - 12 ( - 12x + 10 ) + 12", 
+            "\nSimplify RHS:", 
+            "\nDistribute:", 
+            "90x + 54 =  144x - 120 + 12", 
+            "\nAdd like terms:", 
+            "90x + 54 = 144x - 108", 
+            "\nSubtract 144x on both sides of the equal sign:", 
+            "90x + 54 - 144x = 144x - 108 - 144x", 
+            "\nSimplify both sides:", 
+            "- 54x + 54 = - 108", 
+            "\nSubtract 54 on both sides of the equal sign:", 
+            "- 54x + 54 - 54 = - 108 - 54", 
+            "\nSimplify both sides:", 
+            "- 54x = - 162", 
+            "\nDevide both sides by -54:", 
+            "x = 3", 
+            "\nSolution:", 
+            "x = 3"
+        ]
+    },
+    {
+        "description": "simple_quadratic",
+        "equation": "x^2-1=0",
+        "solution": [
+            "x^2 - 1 = 0",
+            "\nGenerate factors of the coefficient of the x^2",
+            "[(-1, -1), (1, 1)]",
+            "\nGenerate factors of the constant term",
+            "[(-1, 1), (1, -1)]",
+            "\nTest all the permutations until we find the one that solve the problem",
+            "    x factors = (-1, -1), constant factors = (-1, 1), sol = x^2 - 1",
+            "\nFound the permutation that solves our problem:",
+            "\nFactorize:",
+            "(- x + 1)(- x - 1) = 0",
+            "which implies:  - x + 1 = 0    OR    - x - 1 = 0",
+            "\nSolve: - x + 1 = 0",
+            "\nSubtract 1 on both sides of the equal sign:",
+            "- x + 1 - 1 = 0 - 1",
+            "\nSimplify both sides:",
+            "- x = - 1",
+            "\nDevide both sides by -1:",
+            "x = 1",
+            "\nSolve: - x - 1 = 0",
+            "\nAdd 1 on both sides of the equal sign:",
+            "- x - 1 + 1 = 0 + 1",
+            "\nSimplify both sides:",
+            "- x = 1",
+            "\nDevide both sides by -1:",
+            "x = - 1",
+            "\nSolution:",
+            "x = 1    OR    x = - 1"
+        ]
+    }
+]
