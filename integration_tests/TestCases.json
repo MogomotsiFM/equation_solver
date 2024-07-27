@@ -52,7 +52,7 @@
             "\nGenerate factors of the constant term",
             "[(-1, 1), (1, -1)]",
             "\nTest all the permutations until we find the one that solve the problem",
-            "    x factors = (-1, -1), constant factors = (-1, 1), sol = x^2 - 1",
+            "    x^2 factors = (-1, -1), constant factors = (-1, 1), sol = x^2 - 1",
             "\nFound the permutation that solves our problem:",
             "\nFactorize:",
             "(- x + 1)(- x - 1) = 0",
