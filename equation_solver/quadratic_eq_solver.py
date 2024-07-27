@@ -49,10 +49,10 @@ class QuadraticEqSolver(IHigherOrderSolver):
     def generate_factors(self, coeff):
         steps = []
 
-        M = int(math.sqrt(math.fabs(coeff))) + 1
+        M = math.ceil(math.sqrt(math.fabs(coeff)))
         # Decimal allows us to work with numbers the way humans do
         # But it does not display the way we expect: Decimal('1') vs 1
-        factors = [(a, int(str(coeff/a))) for a in range(-M, M) if a != 0 and coeff % a == 0]
+        factors = [(a, int(str(coeff/a))) for a in range(-M-1, M+1) if a != 0 and coeff % a == 0]
 
         steps.append( str(factors) )
 
