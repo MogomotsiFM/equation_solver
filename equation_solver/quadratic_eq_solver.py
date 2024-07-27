@@ -91,7 +91,7 @@ class QuadraticEqSolver(IHigherOrderSolver):
             poly2 = build_polynomial(Monomial(x[1], 1), Monomial(-1*c[1], 0))
             sol_poly = poly1.mult(poly2)
 
-            steps.append(f"    x factors = {x}, constant factors = {c}, sol = {sol_poly}")
+            steps.append(f"    x^2 factors = {x}, constant factors = {c}, sol = {sol_poly}")
 
             if sol_poly == self.lhs:
                 steps.append("\nFound the permutation that solves our problem:")
