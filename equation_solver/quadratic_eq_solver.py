@@ -61,11 +61,11 @@ class QuadraticEqSolver(IHigherOrderSolver):
     def solve_degenerate_problem(self):
         steps = []
 
-        steps.append("\nFactor out x")
+        steps.append("\nFactor out x:")
         poly = self.lhs.div(Monomial(1, 1))
         steps.append(f"x = 0    OR   {poly} = 0")
 
-        steps.append("\nSolve the linear problem")
+        steps.append("\nSolve the linear problem:")
         sol_list, substeps = LinearSolver().solve(poly, Poly(0))
         steps.extend(substeps)
 
@@ -77,15 +77,15 @@ class QuadraticEqSolver(IHigherOrderSolver):
     def solve_general_case(self):
         steps = []
 
-        steps.append("\nGenerate factors of the coefficient of the x^2")
+        steps.append("\nGenerate factors of the coefficient of the x^2:")
         x_factors, substeps = self.generate_factors( self.lhs.get_monomial(2).coeff )
         steps.extend(substeps)
 
-        steps.append("\nGenerate factors of the constant term")
+        steps.append("\nGenerate factors of the constant term:")
         c_factors, substeps = self.generate_factors( self.lhs.get_monomial(0).coeff )
         steps.extend(substeps)
 
-        steps.append("\nTest all the permutations until we find the one that solve the problem")
+        steps.append("\nTest all the permutations until we find the one that solve the problem:")
         for x, c in itertools.product(x_factors, c_factors):
             poly1 = build_polynomial(Monomial(x[0], 1), Monomial(-1*c[0], 0))
             poly2 = build_polynomial(Monomial(x[1], 1), Monomial(-1*c[1], 0))
@@ -123,7 +123,7 @@ class QuadraticEqSolver(IHigherOrderSolver):
     def completing_the_square(self):
         steps = []
 
-        steps.append("\nTrying completing the square")
+        steps.append("\nTrying completing the square:")
 
         const  = self.lhs.get_monomial(0)
         if const != 0:
@@ -143,16 +143,16 @@ class QuadraticEqSolver(IHigherOrderSolver):
 
             poly_rhs = self.rhs
 
-            steps.append("\nFactorize the RHS")
+            steps.append("\nFactorize the RHS:")
             steps.append(f"({poly_lhs})({poly_lhs}) = {poly_rhs}")
 
-            steps.append("\nSimplify")
+            steps.append("\nSimplify:")
             steps.append(f"({poly_lhs})^2 = {poly_rhs}")
 
         coeff = self.rhs.get_monomial(0).coeff
         if coeff > 0:
             sqrt = math.sqrt(self.rhs.get_monomial(0).coeff)
-            steps.append("\nTake the square root of both sides")
+            steps.append("\nTake the square root of both sides:")
             steps.append(f"{poly_lhs} = {sqrt}    OR    {poly_lhs} = - {sqrt}")
 
             steps.append(f"\nSolve: {poly_lhs} = {sqrt}")

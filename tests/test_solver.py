@@ -88,6 +88,16 @@ def test_solver_not_so_simple_steps():
         assert a == b
     assert actual == solution
 
+def test_2nd_solver_simple():
+    target = get_target_solution("test_data/second_order_solver_simple.txt")
+    
+    q = "x^2 - 2x + 1 = 0"
+
+    _, actual = solver.solve(q)
+
+    for a, b in zip(target, actual):
+        assert a.strip() == b.strip()
+    
 def test_solver_missing_closing_bracket_reported():
     with pytest.raises(Exception) as exc:
         # (1 + 6)(x - 3
@@ -117,7 +127,7 @@ def get_target_solution(fname):
 
 def preprocess(step: str):
     tmp = step.strip()
-    if tmp[-1] == ':':
+    if  ':' in tmp:
         return '\n' + step
     else:
         return tmp
