@@ -25,14 +25,15 @@
 
 
 ### How to use it?
-* Checkout the code to your local machine: `git clone url_to_root_folder`
+* Checkout the code to your local machine: `git clone https://github.com/MogomotsiFM/equation_solver.git equation_solver`
+* Change the directory into the source code folder: `cd equation_solver`
 * Create a virtual environment: `python -m virtualenv venv`
 * Activate the virtual environment: `venv\Scripts\Activate`
 * Install requirements: `python -m pip install -r requirements.txt`
 * Running tests
     * Open a terminal and change to the root of the application,
     * Type `python -m pytest` at the terminal then press ENTER to run the tests,
-* Answering your own question
+* Answering your question
     * Open a terminal and change to the test directory for the test app,
     * Enter your question at the terminal: 
         `python test_app.py 2( 4x + 3 ) + 6x = 24 - 4x` 
