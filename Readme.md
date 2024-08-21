@@ -24,6 +24,8 @@
             * Dividing both sides by the coefficient of the first-order expression.
         * This could have been better represented as a class hierarchy. We could then use the strategy design pattern when implementing solvers for higher-order problems.
 
+### Possible improvements
+* Use a tree to keep track of operands and operators instead of two queues.
 
 ### How to use it?
 * Checkout the code to your local machine: `git clone https://github.com/MogomotsiFM/equation_solver.git equation_solver`
