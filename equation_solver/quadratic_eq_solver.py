@@ -135,12 +135,12 @@ class QuadraticEqSolver(IHigherOrderSolver):
         x_coeff = self.lhs.get_monomial(1).coeff
         poly_lhs = build_polynomial(Monomial(1, 1), Monomial(x_coeff/2, 0))
         if x_coeff != 0:
-            steps.append(f"\nSquare  half the coefficient of x and add to both sides: ({x_coeff/2})^2")
+            steps.append(f"\nSquare  half the coefficient of x and add to it both sides: ({x_coeff}/2)^2")
             sq_term = Monomial(x_coeff * x_coeff/4, 0)
+            steps.append(f"{self.lhs} + ({x_coeff}/2)^2 = {self.rhs} + ({x_coeff}/2)^2")
             self.lhs = self.lhs.add(sq_term)
             self.rhs = self.rhs.add(sq_term)
-            steps.append(f"{self.lhs} + ({x_coeff}/2)^2 = {self.rhs} + ({x_coeff}/2)^2")
-
+            
             poly_rhs = self.rhs
 
             steps.append("\nFactorize the RHS:")
